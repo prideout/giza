@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TunnelFlight</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="lib/head.load.min.js"></script>
+    <script src="common.js"></script>
+  </head>
+  <body>
+    <h1>Tunnel Flight</h1>
+    <div class="tagline">
+      You don't always need to call <tt>clear()</tt>
+    </div>
+    <div id="checks" class="customui">
+      <input type="checkbox" id="finite" name="radio" /><label for="finite">
+        Finite
+      </label><input type="checkbox" id="clear" name="radio" /><label for="clear">
+        Clear
+      </label><input type="checkbox" id="freeze" name="radio" /><label for="freeze">
+        Freeze
+      </label>
+    </div>
+    <canvas style="width:640px;height:360px">
+    </canvas>
+    <div id="button-bar">
+    </div>
+    
+    <script id="solidvs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      attribute vec3 Normal;
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+
+      uniform mat4 modelview;
+      uniform mat4 projection;
+
+      void main(void)
+      {
+          vNormal = mat3(modelview) * Normal;
+          vPosition = mat3(modelview) * Position.xyz;
+          gl_Position = projection * modelview * Position;
+          gl_PointSize = 10.0;
+      }
+    </script>
+
+    <script id="lit" type="x-shader/x-fragment">
+      precision highp float;
+      precision highp vec3;
+      uniform vec4 color;
+      varying vec3 vNormal;
+      varying vec3 vPosition;
+
+      uniform float lightAttenuation;
+      uniform vec3 lightPosition;
+      uniform vec3 ambientMaterial;
+      uniform vec4 diffuseMaterial;
+      uniform vec3 specularMaterial;
+      uniform mat4 modelview;
+      uniform float shininess;
+
+      void main()
+      {
+          vec3 L = mat3(modelview) * lightPosition.xyz;
+          vec3 V = vPosition; // Vertex position in eye space
+          vec3 Eye = vec3(0, 0, 1);
+          vec3 Vp = normalize(L - V);
+          vec3 H = normalize(Vp + Eye);
+
+          vec3 N = normalize(vNormal);
+          if (!gl_FrontFacing) {
+              N = -N;
+          }
+
+          float df = max(0.0, dot(N, Vp));
+          float sf = pow(max(0.0, dot(N, H)), shininess);
+
+          vec3 a = L - V;
+          float att = 1.0 / (1.0 + lightAttenuation * dot(a,a));
+
+          vec3 color = ambientMaterial;
+          color += df * diffuseMaterial.rgb;
+          color += sf * specularMaterial;
+          color *= att;
+      
+          gl_FragColor = vec4(color, diffuseMaterial.a);
+      }
+    </script>
+
+    <script id="nonlit" type="x-shader/x-fragment">
+      precision highp float;
+      precision highp vec3;
+      uniform vec4 color;
+      void main()
+      {
+          gl_FragColor = color;
+      }
+    </script>
+
+  </body>
+</html>

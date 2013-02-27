@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Compositor</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="lib/head.load.min.js"></script>
+    <script src="common.js"></script>
+    <style>
+      body {
+          background-image: url("media/BYR_color_wheel.svg"); 
+      }
+      h1 {
+          font-weight: 500;
+          color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Page Compositor</h1>
+    <div class="tagline">
+    </div>
+    <canvas style="width:640px;height:360px">
+    </canvas>
+    <div id="button-bar">
+    </div>
+    
+    <script id="solidvs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      attribute vec3 Normal;
+      varying vec3 vNormal;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main(void)
+      {
+          vNormal = mat3(modelview) * Normal;
+          vec4 p = Position;
+          gl_Position = projection * modelview * p;
+          gl_PointSize = 10.0;
+      }
+    </script>
+
+    <script id="lit" type="x-shader/x-fragment">
+      precision highp float;
+      precision highp vec3;
+      uniform vec4 color;
+      varying vec3 vNormal;
+
+      uniform vec4 lightPosition;
+      uniform vec3 ambientMaterial;
+      uniform vec4 diffuseMaterial;
+      uniform mat4 modelview;
+        
+      void main()
+      {
+          vec3 N = normalize(vNormal);
+          vec3 L = normalize((lightPosition).xyz);
+          vec3 Eye = vec3(0, 0, 1);
+          vec3 H = normalize(L + Eye);
+          float df = max(0.0, dot(N, L));
+          vec3 color = ambientMaterial + df*diffuseMaterial.rgb;
+          gl_FragColor = vec4(color, diffuseMaterial.a);
+      }
+    </script>
+
+    <script id="nonlit" type="x-shader/x-fragment">
+      precision highp float;
+      precision highp vec3;
+      uniform vec4 color;
+      void main()
+      {
+          gl_FragColor = color;
+      }
+    </script>
+
+  </body>
+</html>

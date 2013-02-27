@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BasicLighting</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="lib/head.load.min.js"></script>
+    <script src="common.js"></script>
+  </head>
+  <body>
+    <h1>Basic Lighting</h1>
+    <div class="tagline">
+      Click to toggle the different lighting components.
+    </div>
+    <div id="checks" class="customui">
+      <input type="checkbox" id="ambient" name="radio" checked="checked" /><label for="ambient">
+        Ambient
+      </label><input type="checkbox" id="diffuse" name="radio" checked="checked" /><label for="diffuse">
+        Diffuse
+      </label><input type="checkbox" id="specular" name="radio" /><label for="specular">
+        Specular
+      </label><input type="checkbox" id="fresnel" name="radio" /><label for="fresnel">
+        Fresnel
+      </label>
+    </div>
+    <canvas style="width:640;height:360px">
+    </canvas>
+    <div id="button-bar">
+    </div>
+    
+    <script id="litvs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      attribute vec3 Normal;
+      varying vec3 vNormal;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main(void)
+      {
+          vNormal = mat3(modelview) * Normal;
+          vec4 p = Position;
+          gl_Position = projection * modelview * p;
+      }
+    </script>
+
+    <script id="litfs" type="x-shader/x-fragment">
+      precision highp float;
+      precision highp vec3;
+      uniform vec4 color;
+      varying vec3 vNormal;
+
+      uniform vec4 lightPosition;
+      uniform vec3 ambientMaterial;
+      uniform vec4 diffuseMaterial;
+      uniform vec3 specularMaterial;
+      uniform mat4 modelview;
+      uniform float shininess;
+      uniform float fresnel;
+        
+      void main()
+      {
+          vec3 N = -normalize(vNormal);
+          vec3 L = normalize((lightPosition).xyz);
+          vec3 Eye = vec3(0, 0, 1);
+          vec3 H = normalize(L + Eye);
+    
+          float df = max(0.0, dot(N, L));
+          float sf = pow(max(0.0, dot(N, H)), shininess);
+
+          // Schlick's Approximation
+          float cosTheta = dot(N, Eye);
+          float rfTheta = fresnel + (1.0 - fresnel) * pow(1.0 - cosTheta, 5.0);
+          float ff = (fresnel > 0.0) ? rfTheta : 0.0;
+
+          vec3 color = ambientMaterial +
+                       df * diffuseMaterial.rgb +
+                       sf * specularMaterial.rgb +
+                       ff;
+    
+          gl_FragColor = vec4(color, diffuseMaterial.a);
+      }
+    </script>
+
+  </body>
+</html>

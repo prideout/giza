@@ -1,0 +1,57 @@
+/* http://www.devcurry.com/2010/05/latest-jquery-and-jquery-ui-theme-links.html */
+
+@import url(jquery-ui.css);   /* http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css */
+@import url(OpenSans.css);    /* http://fonts.googleapis.com/css?family=Open+Sans:400,300,500 */
+@import url(default.min.css); /* http://yandex.st/highlightjs/7.3/styles/default.min.css */
+
+h1 { font-weight: 300; }
+
+body {
+    background: #f3f3f3;
+    color: #555;
+    font-family: 'Open Sans', sans-serif;
+}
+
+#button-bar {
+    font-size: 10px;
+}
+
+.customui {
+    font-size: 10px;
+    margin-bottom:10px;
+}
+
+canvas {
+    border-color:#000;
+    border-style:solid;
+    border-width:2px;
+}
+
+.error {
+    margin: 5px;
+    color: #a11;
+}
+
+ul {
+    list-style-type: none;
+}
+
+#button-bar {
+    margin-top:10px;
+}
+
+.tagline {
+    color:#700;
+    margin-bottom:10px;
+}
+
+.status {
+    color:#333;
+    margin-bottom:10px;
+    font-size: 10px;
+}
+
+iframe {
+    border:0;
+}
+

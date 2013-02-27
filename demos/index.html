@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Demo List</title>
+    <link href="http://fonts.googleapis.com/css?family=Candal" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="../demos/css/style.css" rel="stylesheet">
+    <style>
+        a, a:visited, a:hover {
+            text-decoration: none;
+            color: #11a;
+        }
+
+        a:hover {
+            color: #55f;
+        }
+
+        a.big {
+            font: 32px 'Open Sans', sans-serif;
+        }
+
+        a.small {
+            margin-left: 15px;
+            color: #662;
+        }
+
+        a.small:hover {
+            margin-left: 15px;
+            color: #730;
+        }
+    </style>
+    <script src="../demos/lib/ejs_production.js" type="text/javascript">
+    </script>
+
+    <script>
+      window.onload = function() {
+        var data = {
+            StrobeLight: "Strobe Light",
+            ColorWheel: "Color Wheel",
+            ParametricSurf: "Parametric Surface",
+            BasicLighting: "Basic Lighting",
+            FacetNormals: "Facet Normals",
+            SmoothNormals: "Smooth Normals",
+            PolygonTess: "Polygon Tessellation",
+            ColorGraph: "Color Graph",
+            TunnelFlight: "Tunnel Flight",
+            Compositor: "Compositor",
+            ThumbTest: "Thumb Test",
+        };
+        var ejs = new EJS({element: "demo-template"});
+        ejs.update("demo-list", {demos: data});
+      };
+    </script>
+
+  </head>
+  <body>
+    <ul id="demo-list">
+    </ul>
+    <script id="demo-template" type="text/template">
+      [% for(var key in demos) { %]
+       <li>
+         [% if (demos[key]) { %]
+           <a class='big' href='../demos/[%= key %].html'>
+             [%= demos[key] %]
+           </a>
+         [% } else { %]
+           <hr>
+         [% } %]
+       </li>
+     [% } %]
+    </script>
+  </body>
+</html>

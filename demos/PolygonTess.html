@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PolygonTess</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="lib/head.load.min.js"></script>
+    <script src="common.js"></script>
+  </head>
+  <body>
+    <h1>Polygon Tessellation</h1>
+    <div class="tagline">
+      Drag points with the mouse.
+    </div>
+
+    <canvas style="width:640px;height:360px;border:0px;">
+    </canvas>
+
+    <div id="button-bar">
+    </div>
+
+    <script id="dotvs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      uniform float pointSize;
+      void main(void)
+      {
+          vec4 p = Position;
+          gl_Position = projection * modelview * p;
+          gl_PointSize = pointSize;
+      }
+    </script>
+
+    <script id="dotfs" type="x-shader/x-fragment">
+      precision highp float;
+      precision highp vec3;
+      uniform vec4 color;
+      uniform sampler2D tex;
+      void main()
+      {
+          gl_FragColor = color * texture2D(tex, gl_PointCoord);
+      }
+    </script>
+
+    <script id="contourvs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main(void)
+      {
+          vec4 p = Position;
+          gl_Position = projection * modelview * p;
+      }
+    </script>
+
+    <script id="contourfs" type="x-shader/x-fragment">
+      precision highp float;
+      precision highp vec3;
+      uniform vec4 color;
+      void main()
+      {
+          gl_FragColor = color;
+      }
+    </script>
+
+  </body>
+</html>

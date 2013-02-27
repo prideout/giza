@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!--
+http://upload.wikimedia.org/wikipedia/commons/4/40/Coa_Illustration_Cross_Ankh.svg
+
+http://www.professorcloud.com/svg-to-canvas/
+
+var draw = function(ctx) {
+ctx.save();
+ctx.fillStyle = "#ebebeb";
+ctx.strokeStyle = "#000000";
+ctx.lineWidth = 5.147069931030273;
+ctx.miterLimit = 4;
+ctx.beginPath();
+
+ctx.moveTo(145.81951,11.151985);
+ctx.bezierCurveTo(95.611047,11.151985,64.330726,57.81599,65.04964,114.16208);
+ctx.bezierCurveTo(65.570813,155.00985,86.749849,194.54165,119.00057,243.25502);
+ctx.lineTo(11.1508857,230.99317);
+ctx.lineTo(11.1508857,291.06037);
+ctx.lineTo(127.32279,277.84718);
+ctx.lineTo(102.04307,503.55502);
+ctx.lineTo(189.62203,503.55502);
+ctx.lineTo(164.31623,277.84718);
+ctx.lineTo(280.51422,291.06037);
+ctx.lineTo(280.51422,230.99317);
+ctx.lineTo(172.63844,243.25502);
+ctx.bezierCurveTo(204.88917,194.54165,226.0682,155.00985,226.58938,114.16208);
+ctx.bezierCurveTo(227.30829,57.81599,196.02797,11.151985,145.81951,11.151985);
+ctx.closePath();
+
+ctx.moveTo(145.81951,50.025214);
+ctx.bezierCurveTo(160.87845,50.025214,171.12769,56.48072,179.76059,69.052219);
+ctx.bezierCurveTo(188.3935,81.623719,193.95465,101.05069,193.87445,123.43774);
+ctx.bezierCurveTo(193.69265,174.18665,166.85172,209.27827,145.81951,241.22019);
+ctx.bezierCurveTo(124.7873,209.27827,97.946363,174.18665,97.764567,123.43774);
+ctx.bezierCurveTo(97.684371,101.05069,103.24552,81.623719,111.87842,69.052219);
+ctx.bezierCurveTo(120.51133,56.48072,130.76056,50.025214,145.81951,50.025214);
+ctx.closePath();
+
+ctx.fill();
+ctx.stroke();
+ctx.restore();
+};
+
+-->
+
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="170"
+   height="300"
+   viewBox="0 0 291.6651 514.70701"
+   id="svg2">
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs8" />
+  <path
+     d="m 145.81951,11.151985 c -50.208463,0 -81.488784,46.664005 -80.76987,103.010095 0.521173,40.84777 21.700209,80.37957 53.95093,129.09294 l -107.849685,-12.26185 0,60.0672 116.171905,-13.21319 -25.27972,225.70784 87.57896,0 -25.3058,-225.70784 116.19799,13.21319 0,-60.0672 -107.87578,12.26185 C 204.88917,194.54165 226.0682,155.00985 226.58938,114.16208 227.30829,57.81599 196.02797,11.151985 145.81951,11.151985 z m 0,38.873229 c 15.05894,0 25.30818,6.455506 33.94108,19.027005 8.63291,12.5715 14.19406,31.998471 14.11386,54.385521 -0.1818,50.74891 -27.02273,85.84053 -48.05494,117.78245 C 124.7873,209.27827 97.946363,174.18665 97.764567,123.43774 97.684371,101.05069 103.24552,81.623719 111.87842,69.052219 120.51133,56.48072 130.76056,50.025214 145.81951,50.025214 z"
+     id="path2987"
+     style="fill:#ebebeb;stroke:#000000;stroke-width:5.14706993;stroke-miterlimit:4;stroke-dasharray:none" />
+</svg>

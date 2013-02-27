@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ColorWheel</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="lib/head.load.min.js"></script>
+    <script src="common.js"></script>
+  </head>
+  <body>
+    <h1>Color Wheel</h1>
+    <div class="tagline">
+      Simple usage of vertex attributes
+    </div>
+    <canvas style="width:100%;height:360px">
+    </canvas>
+    <div id="button-bar">
+    </div>
+
+    <script id="simplevs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      attribute vec3 Color;
+      varying vec3 vColor;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main()
+      {
+          gl_Position = projection * modelview * Position;
+          vColor = Color;
+      }
+    </script>
+
+    <script id="simplefs" type="x-shader/x-fragment">
+      precision highp float;
+      varying vec3 vColor;
+      void main()
+      {
+          gl_FragColor = vec4(vColor, 1.0);
+      }
+    </script>
+
+  </body>
+</html>
