@@ -1,6 +1,7 @@
-// Create a COMMON namespace for a small handful of helper functions
-// and constants.
-var COMMON = {}
+var COMMON = COMMON || {}
+
+// If the Giza path wasn't specified, assume it's a sibling.
+COMMON.gizapath = COMMON.gizapath || "../giza/";
 
 // Path to a content delivery network for jQuery etc.
 COMMON.cdn = "http://ajax.googleapis.com/ajax/libs/";
@@ -18,21 +19,20 @@ COMMON.recipe = COMMON.basepath.split('/').pop();
 // synchronously.  After we have a build process in place, we'll
 // replace the following source list with a single minified file.
 head.js(
-  "../giza/Giza.js",
-  "../giza/Utility.js",
-  "../giza/Animation.js",
-  "../giza/Shaders.js",
-  "../giza/BufferView.js",
-  "../giza/Vector.js",
-  "../giza/Matrix.js",
-  "../giza/Color.js",
-  "../giza/Topo.js",
-  "../giza/Polygon.js",
-  "../giza/Surface.js",
-  "../giza/Path.js",
-  "../giza/Mouse.js",
-  "../giza/Turntable.js",
-  "lib/stats.min.js",
+  COMMON.gizapath + "Giza.js",
+  COMMON.gizapath + "Utility.js",
+  COMMON.gizapath + "Animation.js",
+  COMMON.gizapath + "Shaders.js",
+  COMMON.gizapath + "BufferView.js",
+  COMMON.gizapath + "Vector.js",
+  COMMON.gizapath + "Matrix.js",
+  COMMON.gizapath + "Color.js",
+  COMMON.gizapath + "Topo.js",
+  COMMON.gizapath + "Polygon.js",
+  COMMON.gizapath + "Surface.js",
+  COMMON.gizapath + "Path.js",
+  COMMON.gizapath + "Mouse.js",
+  COMMON.gizapath + "Turntable.js",
   COMMON.cdn + "jquery/1.8.0/jquery.min.js",
   COMMON.cdn + "jqueryui/1.9.2/jquery-ui.min.js",
   COMMON.basepath + ".js");
