@@ -32,20 +32,12 @@
     </style>
     <script src="../demos/lib/ejs_production.js" type="text/javascript">
     </script>
-
+    <script src="../demos/demolist.js" type="text/javascript">
+    </script>
     <script>
       window.onload = function() {
-        var data = {
-            ColorWheel: "Color Wheel",
-            ParametricSurf: "Parametric Surface",
-            BasicLighting: "Basic Lighting",
-            FacetNormals: "Facet Normals",
-            SmoothNormals: "Smooth Normals",
-            PolygonTess: "Polygon Tessellation",
-            ThumbTest: "Thumb Test",
-        };
         var ejs = new EJS({element: "demo-template"});
-        ejs.update("demo-list", {demos: data});
+        ejs.update("demo-list", {demos: demolist});
       };
     </script>
 
