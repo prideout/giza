@@ -15,6 +15,17 @@ GIZA.flatten = function(array) {
     return flattened;
 };
 
+// Flattens a list-of-vectors into a pre-allocated typed array.
+GIZA.flattenTo = function(src, dst, offset) {
+  offset = offset || 0;
+  for (var i = 0; i < src.length; i++) {
+    for (var j = 0; j < src[i].length; j++) {
+      dst[offset++] = src[i][j];
+    }
+  }
+  return offset;
+};
+
 // String interpolation -- this is Douglas Crockford's "supplant" function.
 GIZA.format = function (s, o) {
   return s.replace(

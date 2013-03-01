@@ -76,52 +76,39 @@ var main = function() {
   // Outer hull
   var outerPointCount = outerContour.coords().length;
   var pointCount = outerContour.coords().length + innerContour.coords().length;
-  var typedArray = new Float32Array(pointCount * 2);
 
-  var offset = 0;
-  offset = outerContour.write(typedArray, offset);
-  offset = innerContour.write(typedArray, offset);
-  
-  //var coordsArray = GIZA.flatten(outerContour.coords().concat(innerContour.coords()));
-  //var typedArray = new Float32Array(coordsArray.length);
-  
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.coords);
-  gl.bufferData(gl.ARRAY_BUFFER, typedArray, gl.STATIC_DRAW);
-  if (gl.getError() !== gl.NO_ERROR) {
-    console.error('Error when trying to create points VBO');
-  }
-
-  // Run ear clipping
-  var triangles = GIZA.tessellate(outerContour.coords(), [innerContour.coords()]);
-
-  // Filled triangles
-  var triangleCount = triangles.length;
-  typedArray = new Uint16Array(GIZA.flatten(triangles));
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.triangles);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, typedArray, gl.STATIC_DRAW);
-  if (gl.getError() !== gl.NO_ERROR) {
-    console.error('Error when trying to create triangle VBO');
-  }
-
-  // Triangle outlines
-  var outlines = [];
-  for (var i = 0; i < triangles.length; i++) {
-    var tri = triangles[i];
-    outlines.push(tri[0]);
-    outlines.push(tri[1]);
-    outlines.push(tri[1]);
-    outlines.push(tri[2]);
-    outlines.push(tri[2]);
-    outlines.push(tri[0]);
-  }
-  typedArray = new Uint16Array(outlines);
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.lines);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, typedArray, gl.STATIC_DRAW);
-  if (gl.getError() !== gl.NO_ERROR) {
-    console.error('Error when trying to create skeleton VBO');
-  }
+  // Computational geometry tells us the # of triangles is n-2.
+  // However. since we have a hole, we're effectively building two
+  // polygons with two shared points, for a total of a n+4 points.
+  // (n+4)-2 is n+2, so:
+  var triangleCount = pointCount + 2;
+  var coordsArray = new Float32Array(pointCount * 2);
+  var elementArray = new Uint16Array(triangleCount * 3);
 
   var draw = function(currentTime) {
+
+    // Flatten the coordinates.
+    var offset = 0;
+    offset = outerContour.write(coordsArray, offset);
+    offset = innerContour.write(coordsArray, offset);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.coords);
+    gl.bufferData(gl.ARRAY_BUFFER, coordsArray, gl.STATIC_DRAW);
+
+    // Run ear clipping.
+    var triangles = GIZA.tessellate(outerContour.coords(), [innerContour.coords()]);
+
+    // Flatten the triangles.
+    GIZA.flattenTo(triangles, elementArray);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.triangles);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, elementArray, gl.STATIC_DRAW);
+    if (gl.getError() !== gl.NO_ERROR) {
+      console.error('Error when trying to create triangle VBO');
+    }
+
+    // Triangle outlines
+    var outlines = GIZA.Topo.trianglesToLines(elementArray);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.lines);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, outlines, gl.STATIC_DRAW);
 
     gl.clear(gl.COLOR_BUFFER_BIT);
     
@@ -143,11 +130,11 @@ var main = function() {
     gl.uniformMatrix4fv(program.projection, false, proj);
     gl.uniform4f(program.color, 0.25, 0.25, 0, 0.5);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.triangles);
-    gl.drawElements(gl.TRIANGLES, 3 * triangleCount, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, elementArray.length, gl.UNSIGNED_SHORT, 0);
 
     // Draw the triangle borders to visualize the tessellation
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.lines);
-    gl.drawElements(gl.LINES, 6 * triangleCount, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.LINES, outlines.length, gl.UNSIGNED_SHORT, 0);
 
     // Draw the outer contour
     program = programs.contour;
@@ -180,7 +167,7 @@ var main = function() {
       gl.bindBuffer(gl.ARRAY_BUFFER, buffers.mousePoints);
       gl.bufferData(gl.ARRAY_BUFFER, typedArray, gl.STATIC_DRAW);
       gl.vertexAttribPointer(attribs.POSITION, 2, gl.FLOAT, false, 0, 0);
-      gl.uniform1f(program.pointSize, 12 * GIZA.pixelScale);
+      gl.uniform1f(program.pointSize, 10 * GIZA.pixelScale);
       gl.uniform4f(program.color, 0.5, 0.0, 0.0, 1);
       gl.drawArrays(gl.POINTS, 0, 1);
     }
