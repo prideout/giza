@@ -16,6 +16,31 @@ GIZA.Path = {
       },
       closePath: function() {
         coords.push(coords[0]);
+      },
+      mirror: function() {
+        for (var i = 0; i < coords.length; i++) {
+          coords[i] = [coords[i][1], coords[i][0]];
+        }
+      },
+      translate: function(x, y) {
+        for (var i = 0; i < coords.length; i++) {
+          coords[i][0] += x;
+          coords[i][1] += y;
+        }
+      },
+      scale: function(x, y) {
+        for (var i = 0; i < coords.length; i++) {
+          coords[i][0] *= x;
+          coords[i][1] *= y;
+        }
+      },
+      write: function(typedArray, offset) {
+        offset = offset || 0;
+        for (var i = 0; i < coords.length; i++) {
+          typedArray[offset++] = coords[i][0];
+          typedArray[offset++] = coords[i][1];
+        }
+        return offset;
       }
     }
   },
