@@ -53,11 +53,12 @@ GIZA.compileShader = function(names, type) {
     _results = [];
     for (_i = 0, _len = names.length; _i < _len; _i++) {
       id = names[_i];
-      var e = $('#' + id);
-      if (!e.length) {
-        e = $('iframe').contents().find('#' + id);
+      var e = document.getElementById(id);
+      if (!e) {
+        console.error('Cannot find shader string named ' + id);
+      } else {
+        _results.push(e.innerHTML);
       }
-      _results.push(e.text());
     }
     return _results;
   })()).join();
