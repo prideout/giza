@@ -7,13 +7,17 @@ GIZA.Path = {
     return {
       getNearest: function(p, threshold) {
         var V2 = GIZA.Vector2;
-        threshold = threshold || 40;
+        var minDist = threshold || 40;
+        var minIndex = -1;
+
         for (var i = 0; i < coords.length; i++) {
-          if (V2.equivalent(coords[i], p, threshold)) {
-            return i;
+          var d = V2.distanceSquared(coords[i], p);
+          if (d < minDist) {
+            minIndex = i;
+            minDist = d;
           }
         }
-        return null;
+        return minIndex;
       },
       coords: function() {
         return coords;

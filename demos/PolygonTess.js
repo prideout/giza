@@ -4,7 +4,13 @@ var main = function() {
   var gl = GIZA.context;
   var M4 = GIZA.Matrix4;
   var V2 = GIZA.Vector2;
-  var dragPoint = null;
+
+  var drag = {
+    active: false,
+    index: -1,
+    start: null,
+    offset: null,
+  };
 
   var attribs = {
     POSITION: 0,
@@ -162,27 +168,68 @@ var main = function() {
     gl.drawArrays(gl.POINTS, 0, pointCount);
 
     // Draw the mouse cursor
-    if (dragPoint != null) {
+    if (drag.index > -1) {
       gl.uniform1f(program.pointSize, 10 * GIZA.pixelScale);
       gl.uniform4f(program.color, 0.5, 0.0, 0.0, 1);
-      gl.drawArrays(gl.POINTS, dragPoint, 1);
+      gl.drawArrays(gl.POINTS, drag.index, 1);
     }
 
     gl.disableVertexAttribArray(attribs.POSITION);
   }
 
-  GIZA.mousemove(function(position, modifiers) {
+  var getNearest = function(position) {
     var i = outerContour.getNearest(position);
-    if (i != null) {
-      dragPoint = i;
+    if (i > -1) {
+      var p = outerContour.coords()[i];
+      return {index: i, position: p};
+    }
+    var i = innerContour.getNearest(position);
+    if (i > -1) {
+      var p = innerContour.coords()[i];
+      i += outerPointCount;
+      return {index: i, position: p};
+    }
+    return false;
+  }
+
+  GIZA.mousedown(function(position, modifiers) {
+    var nearest = getNearest(position);
+    if (nearest) {
+      drag.active = true;
+      drag.index = nearest.index;
+      drag.start = V2.copy(position);
+      drag.offset = V2.subtract(nearest.position, position);
+    } else {
+      drag.active = false;
+      drag.index = -1;
+    }
+  });
+
+  GIZA.mouseup(function(position, modifiers) {
+    drag.active = false;
+  });
+
+  GIZA.mousemove(function(position, modifiers) {
+    if (drag.active) {
+      if (drag.index < outerPointCount) {
+        outerContour.coords()[drag.index] = V2.add(position, drag.offset);
+      } else {
+        var i = drag.index - outerPointCount;
+        innerContour.coords()[i] = V2.add(position, drag.offset);
+      }
+      return;
+    }
+    var i = outerContour.getNearest(position);
+    if (i > -1) {
+      drag.index = i;
       return;
     }
     var i = innerContour.getNearest(position);
-    if (i != null) {
-      dragPoint = i + outerPointCount;
+    if (i > -1) {
+      drag.index = i + outerPointCount;
       return;
     }
-    dragPoint = null;
+    drag.index = -1;
   });
 
   COMMON.loadTexture('media/PointSprite.png', function(i) {
