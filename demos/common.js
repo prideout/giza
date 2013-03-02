@@ -15,10 +15,10 @@ COMMON.basepath = window.location.toString().slice(0, -5)
 // Extract the name of the recipe from the basepath.
 COMMON.recipe = COMMON.basepath.split('/').pop();
 
-// Use HeadJS to load scripts asynchronously, but execute them
+// Use RequireJS to load scripts asynchronously, but execute them
 // synchronously.  After we have a build process in place, we'll
 // replace the following source list with a single minified file.
-head.js(
+COMMON.scripts = [
   COMMON.gizapath + "Giza.js",
   COMMON.gizapath + "Utility.js",
   COMMON.gizapath + "Animation.js",
@@ -35,11 +35,12 @@ head.js(
   COMMON.gizapath + "Turntable.js",
   COMMON.cdn + "jquery/1.8.0/jquery.min.js",
   COMMON.cdn + "jqueryui/1.9.2/jquery-ui.min.js",
-  COMMON.basepath + ".js");
+  COMMON.basepath + ".js"
+];
 
 // After all scripts have been loaded AND after the document is
 // "Ready", do this:
-head.ready(function() {
+require(COMMON.scripts, function() {
 
   // Execute the recipe's main() function
   main();
@@ -48,9 +49,12 @@ head.ready(function() {
   // device pixels) with (0,0) at the upper-left corner.
   var canvas = GIZA.canvas;
 
-  // Download highlightjs and provide buttons for it
+  // For now use a local copy of highlightjs instead of a CDN.
   var hljsurl = "http://yandex.st/highlightjs/7.3/highlight.min.js";
-  head.js(hljsurl, function() {
+  var hljsurl = "lib/highlight.min.js";
+
+  // Download highlightjs and provide buttons for it
+  $.getScript(hljsurl, function() {
 
     // Add some links into the button-bar element
     var slash = document.URL.lastIndexOf("/");
