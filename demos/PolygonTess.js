@@ -4,6 +4,7 @@ var main = function() {
   var gl = GIZA.context;
   var M4 = GIZA.Matrix4;
   var V2 = GIZA.Vector2;
+  var dragPoint = null;
 
   var attribs = {
     POSITION: 0,
@@ -34,7 +35,6 @@ var main = function() {
     coords: gl.createBuffer(),
     lines: gl.createBuffer(),
     triangles: gl.createBuffer(),
-    mousePoints: gl.createBuffer()
   };
 
   gl.clearColor(0.9, 0.9, 0.9, 1.0);
@@ -162,18 +162,28 @@ var main = function() {
     gl.drawArrays(gl.POINTS, 0, pointCount);
 
     // Draw the mouse cursor
-    if (GIZA.mouse.position) {
-      var typedArray = new Float32Array(GIZA.mouse.position);
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffers.mousePoints);
-      gl.bufferData(gl.ARRAY_BUFFER, typedArray, gl.STATIC_DRAW);
-      gl.vertexAttribPointer(attribs.POSITION, 2, gl.FLOAT, false, 0, 0);
+    if (dragPoint != null) {
       gl.uniform1f(program.pointSize, 10 * GIZA.pixelScale);
       gl.uniform4f(program.color, 0.5, 0.0, 0.0, 1);
-      gl.drawArrays(gl.POINTS, 0, 1);
+      gl.drawArrays(gl.POINTS, dragPoint, 1);
     }
 
     gl.disableVertexAttribArray(attribs.POSITION);
   }
+
+  GIZA.mousemove(function(position, modifiers) {
+    var i = outerContour.getNearest(position);
+    if (i != null) {
+      dragPoint = i;
+      return;
+    }
+    var i = innerContour.getNearest(position);
+    if (i != null) {
+      dragPoint = i + outerPointCount;
+      return;
+    }
+    dragPoint = null;
+  });
 
   COMMON.loadTexture('media/PointSprite.png', function(i) {
     spriteTexture = i;

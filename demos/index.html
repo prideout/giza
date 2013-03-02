@@ -7,6 +7,8 @@
     <meta name="author" content="Philip Rideout">
     <link href="../demos/css/style.css" rel="stylesheet">
     <style>
+        h1 { font-size: 14px; }
+
         a, a:visited, a:hover {
             text-decoration: none;
             color: #11a;
@@ -49,7 +51,7 @@
       [% for(var key in demos) { %]
        <li>
          [% if (demos[key]) { %]
-           <a class='big' href='../demos/[%= key %].html'>
+           <a href='../demos/[%= key %].html'>
              [%= demos[key] %]
            </a>
          [% } else { %]

@@ -5,6 +5,16 @@ GIZA.Path = {
   Turtle: function(x, y) {
     var coords = [[x,y]];
     return {
+      getNearest: function(p, threshold) {
+        var V2 = GIZA.Vector2;
+        threshold = threshold || 40;
+        for (var i = 0; i < coords.length; i++) {
+          if (V2.equivalent(coords[i], p, threshold)) {
+            return i;
+          }
+        }
+        return null;
+      },
       coords: function() {
         return coords;
       },
