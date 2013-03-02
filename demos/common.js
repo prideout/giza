@@ -1,42 +1,45 @@
-var COMMON = COMMON || {}
+var COMMON = (function (common) {
 
-// If the Giza path wasn't specified, assume it's a sibling.
-COMMON.gizapath = COMMON.gizapath || "../giza/";
+  // If the Giza path wasn't specified, assume it's a sibling.
+  var gizapath = common.gizapath || "../giza/";
 
-// Path to a content delivery network for jQuery etc.
-COMMON.cdn = "http://ajax.googleapis.com/ajax/libs/";
+  // Path to a content delivery network for jQuery etc.
+  var cdn = "http://ajax.googleapis.com/ajax/libs/";
 
-// Actually, don't use a CDN just yet while we're developing.
-COMMON.cdn = "lib/";
+  // Actually, don't use a CDN just yet while we're developing.
+  var cdn = "lib/";
 
-// Strip off the .html extension from the URL.
-COMMON.basepath = window.location.toString().slice(0, -5)
+  // Strip off the .html extension from the URL.
+  var basepath = window.location.toString().slice(0, -5)
 
-// Extract the name of the recipe from the basepath.
-COMMON.recipe = COMMON.basepath.split('/').pop();
+  // Extract the name of the recipe from the basepath.
+  var recipe = basepath.split('/').pop();
 
-// Use RequireJS to load scripts asynchronously, but execute them
-// synchronously.  After we have a build process in place, we'll
-// replace the following source list with a single minified file.
-COMMON.scripts = [
-  COMMON.gizapath + "Giza.js",
-  COMMON.gizapath + "Utility.js",
-  COMMON.gizapath + "Animation.js",
-  COMMON.gizapath + "Shaders.js",
-  COMMON.gizapath + "BufferView.js",
-  COMMON.gizapath + "Vector.js",
-  COMMON.gizapath + "Matrix.js",
-  COMMON.gizapath + "Color.js",
-  COMMON.gizapath + "Topo.js",
-  COMMON.gizapath + "Polygon.js",
-  COMMON.gizapath + "Surface.js",
-  COMMON.gizapath + "Path.js",
-  COMMON.gizapath + "Mouse.js",
-  COMMON.gizapath + "Turntable.js",
-  COMMON.cdn + "jquery/1.8.0/jquery.min.js",
-  COMMON.cdn + "jqueryui/1.9.2/jquery-ui.min.js",
-  COMMON.basepath + ".js"
-];
+  // After Giza has a build process in place, we'll replace the
+  // following source list with a single minified file.
+  common.scripts = [
+    gizapath + "Giza.js",
+    gizapath + "Utility.js",
+    gizapath + "Animation.js",
+    gizapath + "Shaders.js",
+    gizapath + "BufferView.js",
+    gizapath + "Vector.js",
+    gizapath + "Matrix.js",
+    gizapath + "Color.js",
+    gizapath + "Topo.js",
+    gizapath + "Polygon.js",
+    gizapath + "Surface.js",
+    gizapath + "Path.js",
+    gizapath + "Mouse.js",
+    gizapath + "Turntable.js",
+    cdn + "jquery/1.8.0/jquery.min.js",
+    cdn + "jqueryui/1.9.2/jquery-ui.min.js",
+    basepath + ".js"
+  ];
+
+  return common;
+
+}(COMMON || {}));
 
 // After all scripts have been loaded AND after the document is
 // "Ready", do this:
@@ -45,8 +48,6 @@ require(COMMON.scripts, function() {
   // Execute the recipe's main() function
   main();
 
-  // Install a mouse handler that corresponds to CSS pixels (not
-  // device pixels) with (0,0) at the upper-left corner.
   var canvas = GIZA.canvas;
 
   // For now use a local copy of highlightjs instead of a CDN.

@@ -1,7 +1,6 @@
 var main = function() {
 
-  GIZA.init();
-  var gl = GIZA.context;
+  var gl = GIZA.init();
   var M4 = GIZA.Matrix4;
   var C4 = GIZA.Color4;
   var V2 = GIZA.Vector2;

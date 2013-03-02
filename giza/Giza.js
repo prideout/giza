@@ -43,7 +43,7 @@ GIZA.init = function(canvas, options) {
     msg.classList.add('error');
     msg.innerHTML = "Alas, your browser does not support WebGL.";
     canvas.parentNode.replaceChild(msg, canvas);
-    return;
+    return null;
   }
 
   // Publish some globally-accessible properties.
@@ -99,4 +99,5 @@ GIZA.init = function(canvas, options) {
   };
 
   GIZA.mouseinit();
+  return gl;
 }
