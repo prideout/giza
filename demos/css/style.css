@@ -4,12 +4,23 @@
 @import url(OpenSans.css);    /* http://fonts.googleapis.com/css?family=Open+Sans:400,300,500 */
 @import url(default.min.css); /* http://yandex.st/highlightjs/7.3/styles/default.min.css */
 
-h1 { font-weight: 300; }
+/* preallocate space of areas with custom fonts, to avoid movement after load */
+h1       { height: 32px }
+.tagline { height: 32px }
+
+h1 {
+    font-weight: 300;
+}
 
 body {
     background: #f3f3f3;
     color: #555;
     font-family: 'Open Sans', sans-serif;
+}
+
+#checks {
+    visibility: hidden;
+    height: 32px;
 }
 
 #button-bar {

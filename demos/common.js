@@ -37,6 +37,16 @@ var COMMON = (function (common) {
     basepath + ".js"
   ];
 
+  // In Chrome, Cmd+Shift+R will reload with cache.
+  // This seems to help too.
+  var prefix = "http://localhost";
+  if (basepath.substring(0, prefix.length) == prefix) {
+    console.log("Busting cache.");
+    require.config({
+      urlArgs: "bust=" + (new Date()).getTime()
+    });
+  }
+
   return common;
 
 }(COMMON || {}));
@@ -161,6 +171,9 @@ COMMON.bindOptions = function(options, divid) {
   $(divid).buttonset().change(function() {
     updateOptions();
   });
+
+  // Avoid flash of unstyled content:
+  $(divid).buttonset().css({visibility: 'visible'});
 };
 
 // Create an event handler that listens for a chosen screenshot key,

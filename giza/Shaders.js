@@ -45,31 +45,24 @@ GIZA.compileProgram = function(vNames, fNames, attribs) {
   return program;
 };
 
-GIZA.compileShader = function(names, type) {
+GIZA.compileShader = function(ids, type) {
   var gl = GIZA.context;
-  var handle, id, source, status;
-  source = ((function() {
-    var _i, _len, _results;
-    _results = [];
-    for (_i = 0, _len = names.length; _i < _len; _i++) {
-      id = names[_i];
-      var e = document.getElementById(id);
-      if (!e) {
-        console.error('Cannot find shader string named ' + id);
-      } else {
-        _results.push(e.innerHTML);
-      }
+  var sourceText = "";
+  for (var i = 0; i < ids.length; i++) {
+    var e = document.getElementById(ids[i]);
+    if (!e) {
+      console.error('Cannot find shader string named ' + id);
+    } else {
+      sourceText += e.innerHTML;
     }
-    return _results;
-  })()).join();
-  handle = gl.createShader(type);
-  gl.shaderSource(handle, source);
-  gl.compileShader(handle);
-  status = gl.getShaderParameter(handle, gl.COMPILE_STATUS);
-  if (!status) {
-    console.error('GLSL error in ' + names + ':\n' +
-                  gl.getShaderInfoLog(handle));
   }
-  return handle;
+  var shaderObject = gl.createShader(type);
+  gl.shaderSource(shaderObject, sourceText);
+  gl.compileShader(shaderObject);
+  status = gl.getShaderParameter(shaderObject, gl.COMPILE_STATUS);
+  if (!status) {
+    console.error('GLSL error in ' + ids + ':\n' +
+                  gl.getShaderInfoLog(shaderObject));
+  }
+  return shaderObject;
 };
-
