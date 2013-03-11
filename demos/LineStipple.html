@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>LineStipple</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script data-main="common.js" src="lib/require.js"></script>
+  </head>
+  <body>
+    <h1>Line Stipple</h1>
+    <div class="tagline">
+      Fake stipple using a fragment shader
+    </div>
+    <canvas style="width:100%;height:360px">
+    </canvas>
+    <div id="button-bar">
+    </div>
+
+    <script id="simplevs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      attribute float TexCoord;
+      varying float vTexCoord;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main()
+      {
+          gl_Position = projection * modelview * Position;
+          vTexCoord = TexCoord;
+      }
+    </script>
+
+    <script id="simplefs" type="x-shader/x-fragment">
+      precision highp float;
+      varying float vTexCoord;
+      const float NumDashes = 10.0;
+      const vec3 Color = vec3(1, 1, 1);
+      void main()
+      {
+          float v = floor(2.0 * fract(vTexCoord * NumDashes));
+          gl_FragColor = vec4(Color * v, 1.0);
+      }
+    </script>
+
+  </body>
+</html>

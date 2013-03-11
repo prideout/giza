@@ -6,4 +6,5 @@ var demolist = {
   SmoothNormals: "Smooth Normals",
   PolygonTess: "Polygon Tessellation",
   ThumbTest: "Thumb Test",
+  LineStipple: "Line Stipple",
 };
