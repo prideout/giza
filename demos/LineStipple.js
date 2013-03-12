@@ -32,10 +32,8 @@ var main = function() {
       texCoord: [Float32Array, 1],
     });
 
-    // Allocate the memory.
+    // Allocate and populate the ArrayBuffer.
     var vertexArray = bufferView.makeBuffer(numPoints);
-
-    // Initialize the center point of the wheel.
     var iterator = bufferView.iterator();
     var vertex = iterator.next();
     V2.set(vertex.position, [0, 0]);
@@ -44,7 +42,7 @@ var main = function() {
     V2.set(vertex.position, [0.5, 0.5]);
     vertex.texCoord[0] = 1;
 
-    // Populate the vertex buffer obejct.
+    // Create the vertex buffer object etc.
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
     gl.clearColor(0.61, 0.527, .397, 1.0);

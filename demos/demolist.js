@@ -7,4 +7,5 @@ var demolist = {
   PolygonTess: "Polygon Tessellation",
   ThumbTest: "Thumb Test",
   LineStipple: "Line Stipple",
+  CanvasTexture: "Canvas Texture",
 };

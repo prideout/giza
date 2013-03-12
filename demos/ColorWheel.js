@@ -55,7 +55,7 @@ var main = function() {
       theta += dtheta;
     }
 
-    // Populate the vertex buffer obejct.
+    // Populate the vertex buffer object.
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
     gl.clearColor(0.61, 0.527, .397, 1.0);

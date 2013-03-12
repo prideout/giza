@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CanvasTexture</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script data-main="common.js" src="lib/require.js"></script>
+  </head>
+  <body>
+    <h1>Canvas Texture</h1>
+    <div class="tagline">
+      Reading a 2D canvas and using it as a texture
+    </div>
+
+    <canvas id="canvas3d" style="width:720px;height:360px">
+    </canvas>
+
+    <br>
+
+    <canvas id="canvas2d" style="width:256px;height:64px">
+    </canvas>
+
+    <div id="button-bar">
+    </div>
+
+    <script id="simplevs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      attribute vec2 TexCoord;
+      varying vec2 vTexCoord;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main()
+      {
+          gl_Position = projection * modelview * Position;
+          vTexCoord = TexCoord;
+      }
+    </script>
+
+    <script id="simplefs" type="x-shader/x-fragment">
+      precision highp float;
+      varying vec2 vTexCoord;
+      uniform sampler2D Texture;
+      void main()
+      {
+          gl_FragColor = texture2D(Texture, vTexCoord);
+      }
+    </script>
+
+  </body>
+</html>
