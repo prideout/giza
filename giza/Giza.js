@@ -88,8 +88,8 @@ GIZA.init = function(canvas, options) {
     var width = gizaContext.canvas.clientWidth;
     var height = gizaContext.canvas.clientHeight;
     gizaContext.aspect = width / height;
-    gizaContext.canvas.width = width * gizaContext.pixelScale;
-    gizaContext.canvas.height = height * gizaContext.pixelScale;
+    gizaContext.canvas.width = width * GIZA.pixelScale;
+    gizaContext.canvas.height = height * GIZA.pixelScale;
   };
   window.onresize = function() {
     resize(GIZA);
