@@ -1,6 +1,19 @@
+// Fiddle.js
+//
+// This isn't part of the Giza core; it's a utility that makes it
+// easier to use Giza from jsfiddle.com.  First, define two global
+// functions in your fiddle:
+//
+// init = function(gl) { ... };
+// draw = function(gl, time) { ... };
+//
+// Next, add this to the bottom of your fiddle:
+//
+// $.getScript('http://github.prideout.net/giza/Fiddle.js');
+//
+// And you're done!
 
 var cdn = 'http://ajax.cdnjs.com/ajax/libs';
-
 $.getScript(cdn + '/require.js/2.1.4/require.min.js', function() {
 
   var gizapath = 'http://github.prideout.net/giza/';
@@ -22,8 +35,6 @@ $.getScript(cdn + '/require.js/2.1.4/require.min.js', function() {
     gizapath + 'Turntable.js',
   ];
 
-  // In Chrome, Cmd+Shift+R will reload with cache.
-  // This seems to help too.
   require.config({
     urlArgs: "bust=" + (new Date()).getTime()
   });
@@ -37,17 +48,7 @@ $.getScript(cdn + '/require.js/2.1.4/require.min.js', function() {
     V2 = GIZA.Vector2;
     V3 = GIZA.Vector3;
     V4 = GIZA.Vector4;
-
-    compile = function(uberspec) {
-      var spec = {};
-      for (var key in uberspec) {
-        var shaders = uberspec[key].split(' ');
-        var vs = [shaders[0]];
-        var fs = [shaders[1]];
-        spec[key] = { vs: vs, fs: fs, attribs: attribs};
-      }
-      return GIZA.compile(spec);
-    };
+    compile = GIZA.compile;
 
     init(gl);
 

@@ -2,11 +2,18 @@ var GIZA = GIZA || {};
 
 // Use the supplied JSON metadata to fetch GLSL, compile it, bind
 // attributes, and finally link it into a program object.
-GIZA.compile = function(shaders) {
+GIZA.compile = function(shaders, attribs) {
   var programs = {};
   for (var name in shaders) {
     var shd = shaders[name];
-    programs[name] = GIZA.compileProgram(shd.vs, shd.fs, shd.attribs);
+    if ('object' === typeof shd) {
+      programs[name] = GIZA.compileProgram(shd.vs, shd.fs, shd.attribs || attribs);
+    } else {
+      var shaders = uberspec[key].split(' ');
+      var vs = [shaders[0]];
+      var fs = [shaders[1]];
+      spec[key] = { vs: vs, fs: fs, attribs: attribs};
+    }
   }
   return programs;
 };
