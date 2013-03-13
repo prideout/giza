@@ -41,7 +41,7 @@ GIZA.compileShader = function(ids, type) {
   for (var i = 0; i < ids.length; i++) {
     var e = document.getElementById(ids[i]);
     if (!e) {
-      console.error('Cannot find shader string named ' + id);
+      console.error('Cannot find shader string named ' + ids[i]);
     } else {
       sourceText += e.innerHTML;
     }

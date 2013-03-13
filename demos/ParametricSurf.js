@@ -13,9 +13,7 @@ var main = function() {
     solid: {
       vs: ['solidvs'],
       fs: ['solidfs'],
-      attribs: {
-        Position: attribs.POSITION
-      }
+      attribs: attribs
     }
   });
   
@@ -73,9 +71,9 @@ var main = function() {
       GIZA.aspect,
       3, 20);   // near and far
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.wireframe)
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.wireframe);
     gl.enableVertexAttribArray(attribs.POSITION);
-    program = programs.solid;
+    var program = programs.solid;
     gl.useProgram(program);
     gl.uniformMatrix4fv(program.projection, false, proj);
 
