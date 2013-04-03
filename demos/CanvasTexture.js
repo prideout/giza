@@ -8,6 +8,7 @@ var main = function() {
   var ctx = canvas2d.getContext('2d');
 
   ctx.lineWidth = 5;
+  ctx.scale(pixelScale / 2, pixelScale / 2);
 
   ctx.save();
   ctx.translate(0, -10);
