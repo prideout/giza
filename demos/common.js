@@ -10,7 +10,8 @@ var COMMON = (function (common) {
   var cdn = "lib/";
 
   // Strip off the .html extension from the URL.
-  var basepath = window.location.toString().slice(0, -5)
+  var suffix = window.location.href.indexOf('.html');
+  var basepath = window.location.href.substr(0, suffix);
 
   // Extract the name of the recipe from the basepath.
   var recipe = basepath.split('/').pop();
@@ -183,7 +184,9 @@ COMMON.enableScreenshot = function(drawFunc, triggerKey) {
   triggerKey = triggerKey || 83;
   $(document).keydown(function(e) {
     if (e.keyCode == triggerKey) {
-      GIZA.grabCanvas();
+      console.info('ok');
+      //drawFunc(GIZA.getTime());
+      //GIZA.grabCanvas();
     }
   });
 

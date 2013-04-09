@@ -91,5 +91,6 @@ var main = function() {
 
   init();
   GIZA.animate(draw);
+  COMMON.enableScreenshot(draw);
 
 };

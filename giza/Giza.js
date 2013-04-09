@@ -31,13 +31,12 @@ GIZA.init = function(canvas, options) {
   canvas.width = width * pixelScale;
   canvas.height = height * pixelScale;
 
-  // Set up the WebGL context.
+  // Create the WebGL context and fail gracefully.
   options = options || {
     preserveDrawingBuffer: false,
-    antialias: true
+    antialias: false, // true
   };
-  var gl = canvas.getContext('experimental-webgl', options);
-
+  var gl = GIZA.createContext(canvas, options);
   if (!gl) {
     var msg = document.createElement('p');
     msg.classList.add('error');
@@ -101,3 +100,15 @@ GIZA.init = function(canvas, options) {
   GIZA.mouseinit();
   return gl;
 }
+
+GIZA.createContext = function(el, opts) {
+  var gl = null;
+  var names = 'webgl experimental-webgl webkit-3d moz-webgl'.split(' ');
+  for (var i = 0; i < names.length && !gl; i++) {
+    try {
+      gl = el.getContext(names[i], opts);
+    }
+    catch (e) { }
+  }
+  return gl;
+};
