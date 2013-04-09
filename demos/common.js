@@ -184,9 +184,8 @@ COMMON.enableScreenshot = function(drawFunc, triggerKey) {
   triggerKey = triggerKey || 83;
   $(document).keydown(function(e) {
     if (e.keyCode == triggerKey) {
-      console.info('ok');
-      //drawFunc(GIZA.getTime());
-      //GIZA.grabCanvas();
+      drawFunc(GIZA.getTime());
+      GIZA.grabCanvas();
     }
   });
 
