@@ -151,6 +151,11 @@ GIZA.Vector2 = {
     return this.add(a, b);
   },  
 
+  // Note there are actually two perps, just choose one randomly.
+  perp: function(u) {
+    return this.make(-u[1], u[0]);
+  },
+
 };
 
 GIZA.Vector3 = {
