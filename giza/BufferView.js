@@ -27,7 +27,9 @@ GIZA.BufferView = function(desc) {
     var arrayType = desc[key][0];
     var stride = this.elementSize / arrayType.BYTES_PER_ELEMENT;
     if (stride != Math.floor(stride)) {
-      console.error("GIZA.BufferView is not aligned properly.");
+      console.error("BufferView alignment error: '" + key + "' is " +
+                    arrayType.BYTES_PER_ELEMENT + " bytes but element size is " +
+                    this.elementSize + " bytes.");
     }
     this.strides[key] = stride;
   };
@@ -57,6 +59,11 @@ GIZA.BufferView = function(desc) {
     var bufferView = this;
     return {
       index: 0,
+      clone: function() {
+        var it = bufferView.iterator(field);
+        it.index = this.index;
+        return it;
+      },
       next: function() {
         if (this.index >= bufferView.numElements) {
           return null;
