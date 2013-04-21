@@ -7,7 +7,6 @@ GIZA.drawHooks = []
 // a WebGL error.
 GIZA.animate = function(drawFunction) {
 
-  GIZA.paused = false;
   GIZA.animation = drawFunction;
   var gizaContext = GIZA.currentGizaContext;
 
@@ -66,6 +65,7 @@ GIZA.resume = function() {
 GIZA.restart = function() {
   var now = GIZA.getTime() - GIZA.timeOffset;
   GIZA.timeOffset = -now;
+  GIZA.pauseTime = 0;
 };
 
 // Return a high-precision time that's consistent with what the
