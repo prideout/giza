@@ -53,6 +53,20 @@ GIZA.merge = function (a, b, fields) {
   return a;
 };
 
+// Create a shallow clone of an object or array.
+GIZA.clone = function(obj) {
+  var isObject = function(obj) {
+    return obj === Object(obj);
+  };
+  if (!isObject(obj)) {
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.slice();
+  }
+  return GIZA.merge({}, obj);
+};
+
 // Extract a list of attributes from the given object,
 // and use them to form a new object.
 GIZA.extract = function(object, fields) {
@@ -77,6 +91,39 @@ GIZA.joinBuffers = function(arrays, destType) {
     dest.set(arrays[i], offset);
     offset += arrays[i].length;
   }
+  return dest;
+};
+
+// Combine a list of ArrayBuffer objects into a single ArrayBuffer,
+// interleaving the elements.
+GIZA.interleaveBuffers = function(arrays, elementSize) {
+  var elementCount = null;
+
+  var totalSize = arrays.reduce(function(prev, curr) {
+    var count = curr.byteLength / elementSize;
+    if (count != Math.floor(count)) {
+      console.error(
+        'interleaveBuffers has a badly-sized input: ' +
+          curr.length + ' / ' + elementSize);
+      return;
+    }
+    if (elementCount != null && count != elementCount) {
+      console.error(
+        'interleaveBuffers has inconsistent inputs: ' +
+          elementCount + ', ' + count);
+      return;
+    }
+    elementCount = count;
+    return prev + curr.byteLength;
+  }, 0);
+
+  var dest = new ArrayBuffer(totalSize);
+  var offset = 0;
+  for (var i = 0; i < arrays.byteLength; i++) {
+    //dest.set(arrays[i], offset);
+    offset += arrays[i].byteLength;
+  }
+
   return dest;
 };
 
