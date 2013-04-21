@@ -63,6 +63,11 @@ GIZA.resume = function() {
   }
 };
 
+GIZA.restart = function() {
+  var now = GIZA.getTime() - GIZA.timeOffset;
+  GIZA.timeOffset = -now;
+};
+
 // Return a high-precision time that's consistent with what the
 // browser passes to the requestAnimationFrame function, and that
 // honors an offset created by the pause and resume.
