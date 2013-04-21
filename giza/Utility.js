@@ -118,10 +118,15 @@ GIZA.interleaveBuffers = function(arrays, elementSize) {
   }, 0);
 
   var dest = new ArrayBuffer(totalSize);
-  var offset = 0;
-  for (var i = 0; i < arrays.byteLength; i++) {
-    //dest.set(arrays[i], offset);
-    offset += arrays[i].byteLength;
+  var destBytes = new Uint8Array(dest);
+  var destOffset = 0, srcOffset = 0;
+  for (var e = 0; e < elementCount; e++) {
+    arrays.forEach(function(src) {
+      var element = new Uint8Array(src, srcOffset, elementSize);
+      destBytes.set(element, destOffset);
+      destOffset += elementSize;
+    });
+    srcOffset += elementSize;
   }
 
   return dest;
