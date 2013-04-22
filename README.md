@@ -2,6 +2,12 @@
 
 - BufferView has alignment restrictions that are overkill (eg, can't create a 28-byte vertex format if there's a vec2 in there)
 
+- Need a utility function that takes a BufferView description and does a series of these:
+      gl.enableVertexAttribArray(attribs.POSITION);
+      gl.vertexAttribPointer(attribs.POSITION, 2, gl.FLOAT, false, 48, 0);
+      
+- Likewise for disable
+
 - a build/minify system that uses jslint and minification
    - 2 space indention
    - ' over "
