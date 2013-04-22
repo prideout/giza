@@ -2,12 +2,42 @@
 
 - BufferView has alignment restrictions that are overkill (eg, can't create a 28-byte vertex format if there's a vec2 in there)
 
-- Need a utility function that takes a BufferView description and does a series of these:
-      gl.enableVertexAttribArray(attribs.POSITION);
-      gl.vertexAttribPointer(attribs.POSITION, 2, gl.FLOAT, false, 48, 0);
-      
-- Likewise for disable
+- BufferView takes a dictionary, which is wrong.  Should be an array because order is significant.
 
+- See monarchy demo and figure out how to do something like this in Utility.js.
+  Let's keep BufferView free of GL.
+
+  this.enableAttribs = function(attribs, gl) {
+    gl = gl || GIZA.context;
+    var glTypes = {
+      Float32Array: gl.FLOAT,
+      Uint16Array: gl.UNSIGNED_SHORT
+    };
+    for (var key in attribs) {
+      if (key in desc) {
+        var arrayType = desc[key][0];
+        var normalize = false;
+        gl.enableVertexAttribArray(attribs[key]);
+        gl.vertexAttribPointer(
+          attribs[key],
+          this.dims[key],
+          glTypes[arrayType],
+          normalize,
+          this.elementSize,
+          this.offsets[key]);
+      }
+    }
+  };
+
+  this.disableAttribs = function(attribs, gl) {
+    gl = gl || GIZA.context;
+    for (var key in attribs) {
+      if (key in desc) {
+        gl.disableVertexAttribArray(attribs[key]);
+      }
+    }
+  };
+  
 - a build/minify system that uses jslint and minification
    - 2 space indention
    - ' over "
