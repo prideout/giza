@@ -82,6 +82,19 @@ GIZA.BufferView = function(desc) {
       retval[key] = this.typedArrays[key].subarray(
         index, index + this.dims[key]);
     }
+    retval.set = function(values) {
+      for (var key in values) {
+        if (!(key in desc)) {
+          continue;
+        }
+        var val = values[key];
+        if (Array.isArray(val)) {
+          retval[key].set(val);
+        } else {
+          retval[key][0] = val;
+        }
+      }
+    };
     return retval;
   };
 
