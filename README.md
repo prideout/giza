@@ -1,6 +1,8 @@
 # To Be Done List
 
 - doc ideas
+ - http://capmousse.github.io/include.js/
+ - http://socket.io/#home
  - http://wbpreview.com/previews/WB0K943X5/
  - consider purchase of [this image](http://www.shutterstock.com/pic-89787958/stock-vector-egyptian-pyramids-with-camels-at-sunrise.html
 )
