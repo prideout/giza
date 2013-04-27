@@ -1,5 +1,11 @@
 # To Be Done List
 
+- doc ideas
+ - http://wbpreview.com/previews/WB0K943X5/
+ - consider purchase of [this image](http://www.shutterstock.com/pic-89787958/stock-vector-egyptian-pyramids-with-camels-at-sunrise.html
+)
+ - or, just Simonetta or Macondo from google fonts
+
 - BufferView has alignment restrictions that are overkill (eg, can't create a 28-byte vertex format if there's a vec2 in there)
 
 - BufferView takes a dictionary, which is wrong.  Should be an array because order is significant.
@@ -59,8 +65,5 @@
 - manipulators, BEAUTIFUL [docs](http://folyo.me/), fresnel/marble spiral horn
 - test & impl rotateAxis and scale in Matrix4
     
-- consider purchase of [this image](http://www.shutterstock.com/pic-89787958/stock-vector-egyptian-pyramids-with-camels-at-sunrise.html
-)
-
 - "strict" mode?
 
