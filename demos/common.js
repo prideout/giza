@@ -33,6 +33,7 @@ var COMMON = (function (common) {
     gizapath + "Path.js",
     gizapath + "Mouse.js",
     gizapath + "Turntable.js",
+    gizapath + "Fullscreen.js",
     cdn + "jquery/1.8.0/jquery.min.js",
     cdn + "jqueryui/1.9.2/jquery-ui.min.js",
     basepath + ".js"
