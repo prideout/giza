@@ -83,23 +83,25 @@ GIZA.init = function(canvas, options) {
   GIZA.gizaContexts.push(GIZA.currentGizaContext);
 
   // Handle resize events appropriately.
-  var resize = function(gizaContext) {
-    var width = gizaContext.canvas.clientWidth;
-    var height = gizaContext.canvas.clientHeight;
-    gizaContext.aspect = width / height;
-    gizaContext.canvas.width = width * GIZA.pixelScale;
-    gizaContext.canvas.height = height * GIZA.pixelScale;
-  };
   window.onresize = function() {
-    resize(GIZA);
+    GIZA.refreshSize();
     for (var i = 0; i < GIZA.gizaContexts.length; i++) {
-      resize(GIZA.gizaContexts[i]);
+      GIZA.refreshSize(GIZA.gizaContexts[i]);
     }
   };
 
   GIZA.mouseinit();
   return gl;
-}
+};
+
+GIZA.refreshSize = function(gizaContext) {
+  gizaContext = gizaContext || GIZA;
+  var width = gizaContext.canvas.clientWidth;
+  var height = gizaContext.canvas.clientHeight;
+  gizaContext.aspect = width / height;
+  gizaContext.canvas.width = width * GIZA.pixelScale;
+  gizaContext.canvas.height = height * GIZA.pixelScale;
+};
 
 GIZA.createContext = function(el, opts) {
   var gl = null;
