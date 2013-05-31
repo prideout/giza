@@ -1,0 +1,9 @@
+{
+  "name": "giza-build",
+  "version": "0.0.1",
+  "description": "Minifies the GIZA library",
+  "dependencies": {
+    "uglify-js": "*"
+  },
+  "engine": "node >=0.6.x"
+}
