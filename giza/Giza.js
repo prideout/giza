@@ -34,7 +34,7 @@ GIZA.init = function(canvas, options) {
   // Create the WebGL context and fail gracefully.
   options = options || {
     preserveDrawingBuffer: false,
-    antialias: false, // true
+    antialias: true
   };
   var gl = GIZA.createContext(canvas, options);
   if (!gl) {
