@@ -8,4 +8,5 @@ var demolist = {
   ThumbTest: "Thumb Test",
   LineStipple: "Line Stipple",
   CanvasTexture: "Canvas Texture",
+  FresnelGlass: "Fresnel Glass",
 };

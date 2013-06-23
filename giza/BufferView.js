@@ -1,5 +1,6 @@
 var GIZA = GIZA || {};
 
+// Utility class to manage interleaved data.
 GIZA.BufferView = function(desc) {
 
   // Allow clients to skip the "new"
