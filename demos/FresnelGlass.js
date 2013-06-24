@@ -1,5 +1,4 @@
 var downloadBuffers = function(descs, onDone) {
-
   var expectedBufCount = Object.keys(descs).length;
   var bufCount = 0;
   var bufMap = {};
@@ -59,32 +58,34 @@ var main = function() {
     TEXCOORD: 2,
   };
 
-  var descs = {
+  var vboFiles = {
     normals: 'media/BuddhaNormals.bin',
     positions: 'media/BuddhaPositions.bin',
     triangles: 'media/BuddhaTriangles.bin',
   };
 
-  downloadBuffers(descs, function(buffers) {
+  var gpuBuffers = {};
 
-    var positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(buffers.positions), gl.STATIC_DRAW);
+  downloadBuffers(vboFiles, function(cpuBuffers) {
 
-    var normalsBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(buffers.normals), gl.STATIC_DRAW);
+    gpuBuffers.positions = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.positions);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cpuBuffers.positions), gl.STATIC_DRAW);
 
-    var indexBuffer = gl.createBuffer();
-    indexBuffer.count = buffers.triangles.byteLength / Uint16Array.BYTES_PER_ELEMENT;
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(buffers.triangles), gl.STATIC_DRAW);
+    gpuBuffers.normals = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.normals);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cpuBuffers.normals), gl.STATIC_DRAW);
+
+    gpuBuffers.triangles = gl.createBuffer();
+    gpuBuffers.triCount = cpuBuffers.triangles.byteLength / Uint16Array.BYTES_PER_ELEMENT;
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cpuBuffers.triangles), gl.STATIC_DRAW);
 
     console.info('Downloaded buffers.');
-    
   });
 
   var programs = GIZA.compile({
+
     simple: {
       vs: ['simplevs'],
       fs: ['simplefs'],
@@ -92,7 +93,25 @@ var main = function() {
         Position: attribs.POSITION,
         TexCoord: attribs.TEXCOORD,
       }
-    }
+    },
+
+    depth: {
+      vs: ['VS-Scene'],
+      fs: ['FS-Depth'],
+      attribs: {
+        Position: attribs.POSITION,
+        Normal: attribs.NORMAL,
+      }
+    },
+
+    absorption: {
+      vs: ['VS-Quad'],
+      fs: ['FS-Absorption'],
+      attribs: {
+        Position: attribs.POSITION,
+      }
+    },
+
   });
 
   var numPoints = 4;
@@ -158,6 +177,33 @@ var main = function() {
     gl.uniformMatrix4fv(program.modelview, false, mv);
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, numPoints);
+
+    gl.disableVertexAttribArray(attribs.TEXCOORD);
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    if (Object.keys(a).length == 0) {
+      return;
+    }
+
+    program = programs.depth;
+    gl.useProgram(program);
+    gl.uniformMatrix4fv(program.projection, false, proj);
+    gl.uniformMatrix4fv(program.modelview, false, mv);
+    gl.uniformMatrix4fv(program.normalMatrix, false, nm);
+
+    gl.enableVertexAttribArray(attribs.POSITION);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.positions);
+    gl.vertexAttribPointer(attribs.POSITION, 3, gl.FLOAT, false, 24, 0);
+
+    gl.enableVertexAttribArray(attribs.NORMAL);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.normals);
+    gl.vertexAttribPointer(attribs.NORMAL, 3, gl.FLOAT, false, 24, 0);
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
+    gl.drawElements(gl.TRIANGLES, gpuBuffers.triCount, gl.UNSIGNED_SHORT, 0);
+
+    gl.disableVertexAttribArray(attribs.NORMAL);
   };
 
   init();

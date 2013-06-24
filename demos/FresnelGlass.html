@@ -50,16 +50,15 @@
     <script id="VS-Scene" type="x-shader/x-vertex">
         attribute vec4 Position;
         attribute vec3 Normal;
-        uniform mat4 Modelview;
-        uniform mat4 Projection;
-        uniform mat3 NormalMatrix;
+        uniform mat4 modelview;
+        uniform mat4 projection;
         varying vec3 vPosition;
         varying vec3 vNormal;
         void main(void)
         {
-            vPosition = (Modelview * Position).xyz;
-            vNormal = NormalMatrix * Normal;
-            gl_Position = Projection * Modelview * Position;
+            vPosition = (modelview * Position).xyz;
+            vNormal = mat3(modelview) * Normal;
+            gl_Position = projection * modelview * Position;
         }
     </script>
 
