@@ -77,7 +77,7 @@ var main = function() {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(cpuBuffers.normals), gl.STATIC_DRAW);
 
     gpuBuffers.triangles = gl.createBuffer();
-    gpuBuffers.triCount = cpuBuffers.triangles.byteLength / Uint16Array.BYTES_PER_ELEMENT;
+    gpuBuffers.indexCount = cpuBuffers.triangles.byteLength / Uint16Array.BYTES_PER_ELEMENT;
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cpuBuffers.triangles), gl.STATIC_DRAW);
 
@@ -182,26 +182,35 @@ var main = function() {
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    if (Object.keys(a).length == 0) {
+    if (Object.keys(gpuBuffers).length == 0) {
       return;
     }
+
+    gl.disable(gl.DEPTH_TEST);
+ 
+    var view = M4.lookAt(
+      [0,-17,-1], // eye
+      [0,0,-1],  // target
+      [0,0,1]); // up
+
+    var model = M4.rotationZ(currentTime * 0.001);
+    var mv = M4.multiply(view, model);
 
     program = programs.depth;
     gl.useProgram(program);
     gl.uniformMatrix4fv(program.projection, false, proj);
     gl.uniformMatrix4fv(program.modelview, false, mv);
-    gl.uniformMatrix4fv(program.normalMatrix, false, nm);
 
     gl.enableVertexAttribArray(attribs.POSITION);
     gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.positions);
-    gl.vertexAttribPointer(attribs.POSITION, 3, gl.FLOAT, false, 24, 0);
+    gl.vertexAttribPointer(attribs.POSITION, 3, gl.FLOAT, false, 0, 0);
 
     gl.enableVertexAttribArray(attribs.NORMAL);
     gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.normals);
-    gl.vertexAttribPointer(attribs.NORMAL, 3, gl.FLOAT, false, 24, 0);
+    gl.vertexAttribPointer(attribs.NORMAL, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
-    gl.drawElements(gl.TRIANGLES, gpuBuffers.triCount, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, gpuBuffers.indexCount / 3, gl.UNSIGNED_SHORT, 0);
 
     gl.disableVertexAttribArray(attribs.NORMAL);
   };

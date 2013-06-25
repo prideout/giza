@@ -74,6 +74,7 @@
             highp float fresnel = pow(1.0 - cosTheta, 3.0);
             highp float depth = gl_FrontFacing ? gl_FragCoord.z : -gl_FragCoord.z;
             gl_FragColor = vec4(depth, fresnel, 0, 0);
+gl_FragColor = vec4(1, 1, 1, 0.125);
         }
     </script>
 
