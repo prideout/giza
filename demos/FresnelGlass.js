@@ -77,8 +77,15 @@ var main = function() {
   };
 
   var gpuBuffers = {};
+  var textures = {};
+
+  if (!gl.getExtension("OES_texture_float")) {
+     alert("Your browser does not support floating-point textures.");
+  }
 
   downloadBuffers(vboFiles, function(cpuBuffers) {
+
+    // First, create buffers for vertex attributes.
 
     gpuBuffers.positions = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.positions);
@@ -93,7 +100,32 @@ var main = function() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cpuBuffers.triangles), gl.STATIC_DRAW);
 
-    console.info('Downloaded buffers.');
+    console.info('Downloaded vertex buffers.');
+
+    // Create double-size, fp32 RGBA framebuffer object for depth and fresnel factor
+
+    var texWidth = GIZA.canvas.clientWidth * 2;
+    var texHeight = GIZA.canvas.clientHeight * 2;
+    textures.depth = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, textures.depth);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, texWidth, texHeight, 0, gl.RGBA, gl.FLOAT, null);
+    if (gl.NO_ERROR != gl.getError()) {
+       alert("Bad texture creation");
+    }
+
+    gpuBuffers.depth = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, gpuBuffers.depth);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, textures.depth, 0);
+    if (gl.FRAMEBUFFER_COMPLETE != gl.checkFramebufferStatus(gl.FRAMEBUFFER)) {
+       alert("Incomplete FBO");
+    }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
   });
 
   var programs = GIZA.compile({
