@@ -59,9 +59,21 @@ var main = function() {
   };
 
   var vboFiles = {
-    normals: 'media/BuddhaNormals.bin',
-    positions: 'media/BuddhaPositions.bin',
-    triangles: 'media/BuddhaTriangles.bin',
+    normals: "media/BuddhaNormals.bin",
+    positions: "media/BuddhaPositions.bin",
+    triangles: "media/BuddhaTriangles.bin",
+  };
+
+  var vboFiles = {
+    normals: "http://prideout.net/recipes/BuddhaNormals.bin",
+    positions: "http://prideout.net/recipes/BuddhaPositions.bin",
+    triangles: "http://prideout.net/recipes/BuddhaTriangles.bin",
+  };
+
+  var vboFiles = {
+    normals: "http://glcompanion.com/public/BuddhaNormals.bin&callback",
+    positions: "http://glcompanion.com/public/BuddhaPositions.bin&callback",
+    triangles: "http://glcompanion.com/public/BuddhaTriangles.bin&callback",
   };
 
   var gpuBuffers = {};
@@ -176,7 +188,7 @@ var main = function() {
     var mv = M4.rotationZ(currentTime * 0.01);
     gl.uniformMatrix4fv(program.modelview, false, mv);
 
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, numPoints);
+    //gl.drawArrays(gl.TRIANGLE_STRIP, 0, numPoints);
 
     gl.disableVertexAttribArray(attribs.TEXCOORD);
 
@@ -189,8 +201,8 @@ var main = function() {
     gl.disable(gl.DEPTH_TEST);
  
     var view = M4.lookAt(
-      [0,-17,-1], // eye
-      [0,0,-1],  // target
+      [0,-20,0], // eye
+      [0,0,0],  // target
       [0,0,1]); // up
 
     var model = M4.rotationZ(currentTime * 0.001);
@@ -210,7 +222,7 @@ var main = function() {
     gl.vertexAttribPointer(attribs.NORMAL, 3, gl.FLOAT, false, 0, 0);
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
-    gl.drawElements(gl.TRIANGLES, gpuBuffers.indexCount / 3, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(gl.TRIANGLES, gpuBuffers.indexCount, gl.UNSIGNED_SHORT, 0);
 
     gl.disableVertexAttribArray(attribs.NORMAL);
   };
