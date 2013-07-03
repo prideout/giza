@@ -17,37 +17,18 @@ var downloadBuffers = function(descs, onDone) {
   }
 };
 
+var createQuad = function (l, b, r, t) {
+  var positions = [ l, b, l, t, r, t, r, t, r, b, l, b ];
+  var positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+  return positionBuffer;
+}
+
 var main = function() {
 
-  var canvas2d = document.getElementById('canvas2d');
-  var pixelScale = window.devicePixelRatio || 1;
-  canvas2d.width = canvas2d.clientWidth * pixelScale;
-  canvas2d.height = canvas2d.clientHeight * pixelScale;
-
-  var ctx = canvas2d.getContext('2d');
-
-  ctx.lineWidth = 5;
-  ctx.scale(pixelScale / 2, pixelScale / 2);
-
-  ctx.save();
-  ctx.translate(0, -10);
-  ctx.beginPath();
-  ctx.arc(75,75,50,0,Math.PI*2,true); // Outer circle
-  ctx.moveTo(110,75);
-  ctx.arc(75,75,35,0,Math.PI,false);   // Mouth (clockwise)
-  ctx.moveTo(65,65);
-  ctx.arc(60,65,5,0,Math.PI*2,true);  // Left eye
-  ctx.moveTo(95,65);
-  ctx.arc(90,65,5,0,Math.PI*2,true);  // Right eye
-  ctx.stroke();
-  ctx.restore();
-
-  ctx.font = 'bold 50px Verdana';
-  ctx.fillStyle = "rgba(0, 150, 200, 255)";
-  ctx.fillText('grasshopper', 150, 80);
-
   var canvas3d = document.getElementById('canvas3d');
-  var gl = GIZA.init(canvas3d);
+  gl = GIZA.init(canvas3d, {antialias: false});
   var M4 = GIZA.Matrix4;
   var C4 = GIZA.Color4;
   var V2 = GIZA.Vector2;
@@ -104,8 +85,8 @@ var main = function() {
 
     // Create double-size, fp32 RGBA framebuffer object for depth and fresnel factor
 
-    var texWidth = GIZA.canvas.clientWidth * 2;
-    var texHeight = GIZA.canvas.clientHeight * 2;
+    var texWidth = GIZA.canvas.width;
+    var texHeight = GIZA.canvas.height;
     textures.depth = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, textures.depth);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -126,6 +107,7 @@ var main = function() {
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.bindTexture(gl.TEXTURE_2D, null);
 
+    gpuBuffers.quad = createQuad(-1, -1, 1, 1);
   });
 
   var programs = GIZA.compile({
@@ -186,13 +168,6 @@ var main = function() {
     gl.clearColor(0.6, 0.6, .6, 1.0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-    // Copy the 2D canvas into the texture object.
-    var canvas2d = document.getElementById('canvas2d');
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas2d);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   };
 
   var draw = function(currentTime) {
@@ -207,22 +182,6 @@ var main = function() {
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
     gl.enableVertexAttribArray(attribs.POSITION);
-    gl.vertexAttribPointer(attribs.POSITION, 2, gl.FLOAT, false, 16, 0);
-
-    gl.enableVertexAttribArray(attribs.TEXCOORD);
-    gl.vertexAttribPointer(attribs.TEXCOORD, 2, gl.FLOAT, false, 16, 8);
-
-    var program = programs.simple;
-    gl.useProgram(program);
-    gl.uniformMatrix4fv(program.projection, false, proj);
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-
-    var mv = M4.rotationZ(currentTime * 0.01);
-    gl.uniformMatrix4fv(program.modelview, false, mv);
-
-    //gl.drawArrays(gl.TRIANGLE_STRIP, 0, numPoints);
-
-    gl.disableVertexAttribArray(attribs.TEXCOORD);
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -235,28 +194,48 @@ var main = function() {
     var view = M4.lookAt(
       [0,-20,0], // eye
       [0,0,0],  // target
-      [0,0,1]); // up
+      [0,0,-1]); // up
 
     var model = M4.rotationZ(currentTime * 0.001);
     var mv = M4.multiply(view, model);
+
+    // Draw Buddha into the depth buffer
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, gpuBuffers.depth);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE);
 
     program = programs.depth;
     gl.useProgram(program);
     gl.uniformMatrix4fv(program.projection, false, proj);
     gl.uniformMatrix4fv(program.modelview, false, mv);
-
     gl.enableVertexAttribArray(attribs.POSITION);
     gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.positions);
     gl.vertexAttribPointer(attribs.POSITION, 3, gl.FLOAT, false, 0, 0);
-
     gl.enableVertexAttribArray(attribs.NORMAL);
     gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.normals);
     gl.vertexAttribPointer(attribs.NORMAL, 3, gl.FLOAT, false, 0, 0);
-
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
     gl.drawElements(gl.TRIANGLES, gpuBuffers.indexCount, gl.UNSIGNED_SHORT, 0);
-
     gl.disableVertexAttribArray(attribs.NORMAL);
+
+    // Draw the image-processing quad
+
+    gl.disable(gl.BLEND);
+    program = programs.absorption;
+    gl.useProgram(program);
+    gl.uniform2f(program.Size, GIZA.canvas.width, GIZA.canvas.height);
+    gl.uniform3f(program.DiffuseMaterial, 0.0, 0.75, 0.75);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.clearColor(0.9, 0.9, 0.9, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.bindTexture(gl.TEXTURE_2D, textures.depth);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gpuBuffers.quad);
+    gl.vertexAttribPointer(attribs.POSITION, 2, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.bindTexture(gl.TEXTURE_2D, null);
   };
 
   init();

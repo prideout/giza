@@ -16,11 +16,6 @@
     <canvas id="canvas3d" style="width:720px;height:360px">
     </canvas>
 
-    <br>
-
-    <canvas id="canvas2d" style="width:256px;height:64px">
-    </canvas>
-
     <div id="button-bar">
     </div>
 
@@ -74,7 +69,6 @@
             highp float fresnel = pow(1.0 - cosTheta, 3.0);
             highp float depth = gl_FrontFacing ? gl_FragCoord.z : -gl_FragCoord.z;
             gl_FragColor = vec4(depth, fresnel, 0, 0);
-gl_FragColor = vec4(1, 1, 1, 0.125);
         }
     </script>
 
