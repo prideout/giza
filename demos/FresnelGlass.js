@@ -40,18 +40,6 @@ var main = function() {
   };
 
   var vboFiles = {
-    normals: "media/BuddhaNormals.bin",
-    positions: "media/BuddhaPositions.bin",
-    triangles: "media/BuddhaTriangles.bin",
-  };
-
-  var vboFiles = {
-    normals: "http://prideout.net/recipes/BuddhaNormals.bin",
-    positions: "http://prideout.net/recipes/BuddhaPositions.bin",
-    triangles: "http://prideout.net/recipes/BuddhaTriangles.bin",
-  };
-
-  var vboFiles = {
     normals: "http://glcompanion.com/public/BuddhaNormals.bin&callback",
     positions: "http://glcompanion.com/public/BuddhaPositions.bin&callback",
     triangles: "http://glcompanion.com/public/BuddhaTriangles.bin&callback",
