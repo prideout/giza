@@ -1,6 +1,8 @@
 var GIZA = GIZA || {};
 
 //  - quadsToTriangles
+//  - quadsToLines
+//  - trianglesToLines
 //
 // TODO
 //   - add processTriangles, similar API as quadsToTriangles

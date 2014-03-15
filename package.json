@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Minifies the GIZA library",
   "dependencies": {
-    "uglify-js": "*"
+    "uglify-js": "2.4.13"
   },
-  "engine": "node >=0.6.x"
+  "engine": "node >=0.10.x"
 }

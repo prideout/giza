@@ -8,6 +8,7 @@ var scripts = [
   gizapath + "Shaders.js",
   gizapath + "BufferView.js",
   gizapath + "Vector.js",
+  gizapath + "Bounds.js",
   gizapath + "Matrix.js",
   gizapath + "Color.js",
   gizapath + "Topo.js",
@@ -16,7 +17,7 @@ var scripts = [
   gizapath + "Path.js",
   gizapath + "Mouse.js",
   gizapath + "Turntable.js",
-  gizapath + "Fullscreen.js",
+  gizapath + "Fullscreen.js"
 ];
 
 var UglifyJS = require("uglify-js");
