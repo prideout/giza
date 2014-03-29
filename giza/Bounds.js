@@ -24,9 +24,13 @@ GIZA.Bounds = {
     return retval;
   },
 
-  extent: function(aabb) {
+  size: function(aabb) {
     var V3 = GIZA.Vector3;
-    var s = V3.subtract(aabb.max, aabb.min);
+    return V3.subtract(aabb.max, aabb.min);
+  },
+
+  extent: function(aabb) {
+    var s = this.size(aabb);
     return Math.max(Math.max(s[0], s[1]), s[2]);
   },
 

@@ -17,7 +17,7 @@ var downloadBuffers = function(descs, onDone) {
   }
 };
 
-var createQuad = function (l, b, r, t) {
+var createQuad = function(l, b, r, t) {
   var positions = [ l, b, l, t, r, t, r, t, r, b, l, b ];
   var positionBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
@@ -40,9 +40,9 @@ var main = function() {
   };
 
   var vboFiles = {
-    normals: "http://glcompanion.com/public/BuddhaNormals.bin&callback",
-    positions: "http://glcompanion.com/public/BuddhaPositions.bin&callback",
-    triangles: "http://glcompanion.com/public/BuddhaTriangles.bin&callback",
+    normals: "media/BuddhaNormals.bin",
+    positions: "media/BuddhaPositions.bin",
+    triangles: "media/BuddhaTriangles.bin",
   };
 
   var gpuBuffers = {};
