@@ -134,7 +134,7 @@ GIZA.interleaveBuffers = function(arrays, elementSize) {
 
 // Kinda like jQuery's get function, except that dataType can be
 // either "binary" or "json".
-GIZA.download = function(url, successFunc, dataType) {
+GIZA.download = function(url, successFunc, dataType, errorFunc) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   if (dataType == 'json') {
@@ -152,6 +152,7 @@ GIZA.download = function(url, successFunc, dataType) {
     };
   }
   xhr.onload = onloadFunc;
+  xhr.onerror = errorFunc;
   xhr.send(null);
 };
 

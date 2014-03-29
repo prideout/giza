@@ -3,6 +3,10 @@ var downloadBuffers = function(descs, onDone) {
   var bufCount = 0;
   var bufMap = {};
 
+  var onError = function() {
+    $('.tagline').text('Error: unable to download Buddha.');
+  };
+
   var onReceive = function(dataType) {
     return function(data) {
       bufMap[dataType] = data;
@@ -13,7 +17,7 @@ var downloadBuffers = function(descs, onDone) {
   };
 
   for (var key in descs) {
-    GIZA.download(descs[key], onReceive(key), 'binary');
+    GIZA.download(descs[key], onReceive(key), 'binary', onError);
   }
 };
 
@@ -39,10 +43,11 @@ var main = function() {
     TEXCOORD: 2,
   };
 
+  var prefix = 'http://github.prideout.net/giza/demos/media/';
   var vboFiles = {
-    normals: "media/BuddhaNormals.bin",
-    positions: "media/BuddhaPositions.bin",
-    triangles: "media/BuddhaTriangles.bin",
+    normals: prefix + "BuddhaNormals.bin",
+    positions: prefix + "BuddhaPositions.bin",
+    triangles: prefix + "BuddhaTriangles.bin",
   };
 
   var gpuBuffers = {};
@@ -50,6 +55,10 @@ var main = function() {
 
   if (!gl.getExtension("OES_texture_float")) {
      alert("Your browser does not support floating-point textures.");
+  }
+
+  if (!gl.getExtension("OES_float_linear")) {
+     alert("Your browser does not support bilinear filtering with FP textures.");
   }
 
   downloadBuffers(vboFiles, function(cpuBuffers) {
@@ -69,7 +78,7 @@ var main = function() {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gpuBuffers.triangles);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cpuBuffers.triangles), gl.STATIC_DRAW);
 
-    console.info('Downloaded vertex buffers.');
+    $('.tagline').text('Rendering to a floating-point FBO.');
 
     // Create double-size, fp32 RGBA framebuffer object for depth and fresnel factor
 
