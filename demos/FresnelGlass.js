@@ -57,7 +57,7 @@ var main = function() {
      alert("Your browser does not support floating-point textures.");
   }
 
-  if (!gl.getExtension("OES_float_linear")) {
+  if (!gl.getExtension("OES_texture_float_linear")) {
      alert("Your browser does not support bilinear filtering with FP textures.");
   }
 
