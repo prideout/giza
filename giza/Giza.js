@@ -1,11 +1,23 @@
-// Giza: a low-level utility layer for WebGL
-//
-// Giza doesn't have dependencies on any other JavaScript libraries.  It's
-// a low-level utility layer rather than a scene graph or effects
-// library.
+/**
+ * Giza: a low-level utility layer for WebGL
+ *
+ * Giza doesn't have dependencies on any other JavaScript libraries.  It's
+ * a low-level utility layer rather than a scene graph or effects
+ * library.
+ */
 
+/** @namespace */
 var GIZA = GIZA || { REVISION : '0' };
 
+/**
+  * Initializes the Giza library and returns the raw WebGL context.
+  *
+  * @param {HTMLCanvasElement} canvas  - Optional DOM element for the canvas.  If not specified, GIZA chooses the first `<canvas>` in the current document.
+  * @param {object}            options - Dictionary of WebGL options that Giza should pass to `getContext`.
+  * - **preserveDrawingBuffer** If false, discards contents of framebuffer of every frame.  Defaults to false.
+  * - **antialias** Enables multisampling.  Defaults to true.
+  * @returns {WebGLRenderingContext}
+  */
 GIZA.init = function(canvas, options) {
 
   if (GIZA.saveGizaContext) {

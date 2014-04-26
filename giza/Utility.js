@@ -1,6 +1,11 @@
 var GIZA = GIZA || {};
 
-// Flattens a list-of-lists into a single list.  Doesn't go any deeper.
+/**
+  * Flattens a list-of-lists into a single list.
+  *
+  * @param {array} array - Nested Javascript array.
+  * @returns {array} Flattened Javascript array.
+  */
 GIZA.flatten = function(array) {
     var element, flattened, _i, _len;
     flattened = [];
@@ -15,7 +20,14 @@ GIZA.flatten = function(array) {
     return flattened;
 };
 
-// Flattens a list-of-vectors into a pre-allocated typed array.
+/**
+  * Flattens a list-of-vectors into a pre-allocated array.
+  *
+  * @param src    {array-of-arrays} - Input source.
+  * @param dst    {array} - Destination to be populated with the flattened data.
+  * @param offset {integer} - Optional starting index (defaults to 0)
+  * @returns {integer} Ending index (i.e., `offset` + number of copied elements)
+  */
 GIZA.flattenTo = function(src, dst, offset) {
   offset = offset || 0;
   for (var i = 0; i < src.length; i++) {
@@ -26,7 +38,15 @@ GIZA.flattenTo = function(src, dst, offset) {
   return offset;
 };
 
-// String interpolation -- this is Douglas Crockford's "supplant" function.
+/**
+  * String interpolation.
+  *
+  * @param template {string}  - Pattern string with curly braces around each key.
+  * @param context  {object}  - Key-value pairs to replace.
+  * @returns {string} Evaluated template string.
+  *
+  * This is Douglas Crockford's "supplant" function -- it's just a simple templating function.
+  */
 GIZA.format = function (s, o) {
   return s.replace(
       /{([^{}]*)}/g,

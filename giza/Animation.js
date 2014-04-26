@@ -1,5 +1,10 @@
 var GIZA = GIZA || {};
 
+/**
+  * List of user-supplied callback functions that Giza will call
+  * before each animation frame.  The callback is passed a time
+  * in milliseconds.
+  */
 GIZA.drawHooks = []
 
 // Kicks off an infinite series of animation frames, honoring 'pause'

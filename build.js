@@ -24,3 +24,6 @@ var UglifyJS = require("uglify-js");
 var fs = require("fs");
 var result = UglifyJS.minify(scripts);
 fs.writeFileSync('giza.min.js', result.code);
+
+var exec = require('child_process').exec;
+exec("./node_modules/.bin/jsdoc -c docs/conf.json");
