@@ -58,7 +58,14 @@ GIZA.format = function (s, o) {
   );
 };
 
-// Copy all (or some) attributes from b into a.
+/**
+  * Copy all (or some) attributes from b into a.
+  *
+  * @param a {object}    - Destination object.
+  * @param b {object}    - Source object.
+  * @param fields {list} - List of property names to copy.  Defaults to all.
+  * @returns {object} a
+  */
 GIZA.merge = function (a, b, fields) {
   if (fields) {
     for (var i = 0; i < fields.length; i++) {

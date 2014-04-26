@@ -1,0 +1,20 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+      "include": [ "giza", "README.md" ],
+      "exclude": [  ],
+      "includePattern": ".+\\.js(doc)?$"
+    },
+    "plugins": [
+      "plugins/markdown"
+    ],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
+    "opts": {
+      "destination": "./docs/"
+    }
+}
