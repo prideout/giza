@@ -61,10 +61,10 @@ GIZA.format = function (s, o) {
 /**
   * Copy all (or some) attributes from b into a.
   *
-  * @param a {object}    - Destination object.
-  * @param b {object}    - Source object.
+  * @param dst {object}    - Destination object.
+  * @param src {object}    - Source object.
   * @param fields {list} - List of property names to copy.  Defaults to all.
-  * @returns {object} a
+  * @returns {object} dst
   */
 GIZA.merge = function (a, b, fields) {
   if (fields) {
@@ -80,7 +80,12 @@ GIZA.merge = function (a, b, fields) {
   return a;
 };
 
-// Create a shallow clone of an object or array.
+/**
+  * Create a shallow clone of an object or array.
+  *
+  * @param obj {object}
+  * @returns {object}
+  */
 GIZA.clone = function(obj) {
   var isObject = function(obj) {
     return obj === Object(obj);
@@ -94,8 +99,14 @@ GIZA.clone = function(obj) {
   return GIZA.merge({}, obj);
 };
 
-// Extract a list of attributes from the given object,
-// and use them to form a new object.
+/**
+  * Extract a list of attributes from the given object,
+  * and use them to form a new object.
+  *
+  * @param object {object}
+  * @param fields {array-of-string}
+  * @returns {object}
+  */
 GIZA.extract = function(object, fields) {
   var retval = {};
   for (var i = 0; i < fields.length; i++) {
@@ -105,8 +116,14 @@ GIZA.extract = function(object, fields) {
   return retval;
 };
 
-// Aggregate a list of typed arrays by pre-allocating a giant array
-// and blitting into it.
+/**
+  * Aggregate a list of typed arrays by pre-allocating a giant array
+  * and blitting into it.
+  *
+  * @param arrays {list-of-typed-arrays} List of typed arrays to combine.
+  * @param destType {type} Constructor for the new typed array (e.g., `Uint8Array`)
+  * @returns {TypedArray}
+  */
 GIZA.joinBuffers = function(arrays, destType) {
   destType = destType || arrays[0].constructor;
   var totalSize = arrays.reduce(function(prev, curr) {

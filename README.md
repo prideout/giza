@@ -20,6 +20,15 @@ Utility.js
 **{@link GIZA.merge}**
     Copies properties from one object to another.
 
+**{@link GIZA.clone}**
+    Simple shallow copy.
+
+**{@link GIZA.extract}**
+    Creates a new object from a subset of properties.
+
+**{@link GIZA.joinBuffers}**
+    Combines a list of typed arrays.
+
 To Be Done
 ----------
 
