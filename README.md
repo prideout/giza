@@ -29,8 +29,18 @@ Utility.js
 **{@link GIZA.joinBuffers}**
     Combines a list of typed arrays.
 
+**{@link GIZA.interleaveBuffers}**
+    Combine a list of ArrayBuffer objects into a single ArrayBuffer, interleaving the elements.
+
+**{@link GIZA.download}**
+    Downloads an ArrayBuffer or JSON object from the given URL.
+
+**{@link GIZA.grabCanvas}**
+    Generates a PNG image from the current `canvas` element.
+
 To Be Done
 ----------
 
-Continue adding jsdoc features.
-Tutorials?
+- jsdoc for the typical shader-setup stuff seen in the demos.
+- jsdoc for tutorials (use md suffix) http://usejsdoc.org/about-tutorials.html
+- js styling or templating https://github.com/jsdoc3/jsdoc/tree/master/templates

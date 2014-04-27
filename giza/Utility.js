@@ -138,8 +138,17 @@ GIZA.joinBuffers = function(arrays, destType) {
   return dest;
 };
 
-// Combine a list of ArrayBuffer objects into a single ArrayBuffer,
-// interleaving the elements.
+/**
+  * Combine a list of ArrayBuffer objects into a single ArrayBuffer,
+  * interleaving the elements.
+  *
+  * The total number of bytes in each source array must be evenly
+  * divisble by `elementSize`.
+  *
+  * @param arrays {list-of-typed-arrays} List of typed arrays to combine.
+  * @param elementSize {integer} Number of bytes per element.
+  * @returns {ArrayBuffer}
+  */
 GIZA.interleaveBuffers = function(arrays, elementSize) {
   var elementCount = null;
 
@@ -176,8 +185,15 @@ GIZA.interleaveBuffers = function(arrays, elementSize) {
   return dest;
 };
 
-// Kinda like jQuery's get function, except that dataType can be
-// either "binary" or "json".
+/**
+  * Similar to jQuery's get function, except that dataType can be
+  * either "binary" or "json".
+  *
+  * @param url {string} Path to file.
+  * @param successFunc {function} Callback that receives the `ArrayBuffer` or JSON object.
+  * @param dataType {string} Either `json` or `binary`.
+  * @param errorFunc {function} Optional callback passed to the `onerror` member of `XMLHttpRequest`.
+  */
 GIZA.download = function(url, successFunc, dataType, errorFunc) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
@@ -200,8 +216,14 @@ GIZA.download = function(url, successFunc, dataType, errorFunc) {
   xhr.send(null);
 };
 
-// Take a screenshot of the canvas and open it in a new tab.
-GIZA.grabCanvas = function () {
+/**
+  * Generate a PNG image from the `canvas` associated with the current
+  * GIZA context.
+  *
+  * @param url {string} Path to file.
+  * @returns {string} URL to image blob.
+  */
+GIZA.grabCanvas = function() {
   var url = GIZA.canvas.toDataURL("image/png");
   window.open(url, '_blank');
   window.focus();
