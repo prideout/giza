@@ -106,6 +106,9 @@ GIZA.init = function(canvas, options) {
   return gl;
 };
 
+/**
+  * Called internally in response to `onresize` events.
+  */
 GIZA.refreshSize = function(gizaContext) {
   gizaContext = gizaContext || GIZA;
   var width = gizaContext.canvas.clientWidth;
@@ -115,6 +118,9 @@ GIZA.refreshSize = function(gizaContext) {
   gizaContext.canvas.height = height * GIZA.pixelScale;
 };
 
+/**
+  * Called internally to safely create the WebGL context.
+  */
 GIZA.createContext = function(el, opts) {
   var gl = null;
   var names = 'webgl experimental-webgl webkit-3d moz-webgl'.split(' ');

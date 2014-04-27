@@ -5,6 +5,11 @@ Giza.js
 **{@link GIZA.init}**
     Initializes the Giza library and returns the raw WebGL context.
 
+Shaders.js
+----------
+**{@link GIZA.compile}**
+    Fetches GLSL strings and builds them into program objects.
+
 Utility.js
 ----------
 
@@ -38,9 +43,13 @@ Utility.js
 **{@link GIZA.grabCanvas}**
     Generates a PNG image from the current `canvas` element.
 
-To Be Done
-----------
+To Be Done Doc Tasks
+--------------------
 
-- jsdoc for the typical shader-setup stuff seen in the demos.
+- GIZA.compile needs usage examples
+- Vector / Matrix
 - jsdoc for tutorials (use md suffix) http://usejsdoc.org/about-tutorials.html
-- js styling or templating https://github.com/jsdoc3/jsdoc/tree/master/templates
+- styling / templating https://github.com/jsdoc3/jsdoc/tree/master/templates
+- if jsdoc is too complex, consider [jsdox](https://github.com/sutoiku/jsdox)
+- http://orderedlist.com/modernist/
+
