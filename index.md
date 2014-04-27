@@ -46,10 +46,11 @@ Utility.js
 To Be Done Doc Tasks
 --------------------
 
-- GIZA.compile needs usage examples
+- GIZA.compile should support explicit strings -- DOM ids should only be used if the first token is #
+- GIZA.compile needs usage examples (three ways of specifying strings)
 - Vector / Matrix
 - jsdoc for tutorials (use md suffix) http://usejsdoc.org/about-tutorials.html
 - styling / templating https://github.com/jsdoc3/jsdoc/tree/master/templates
 - if jsdoc is too complex, consider [jsdox](https://github.com/sutoiku/jsdox)
 - http://orderedlist.com/modernist/
-
+- Bower component and versioning.

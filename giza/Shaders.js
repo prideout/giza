@@ -48,6 +48,12 @@ GIZA.compileShader = function(ids, type) {
   var gl = GIZA.context;
   var sourceText = "";
   for (var i = 0; i < ids.length; i++) {
+    if (typeof ids[i] == "function") {
+      sourceText += ids[i].toString().
+        replace(/^[^\/]+\/\*!?/, '').
+        replace(/\*\/[^\/]+$/, '');
+      continue;
+    }
     var e = document.getElementById(ids[i]);
     if (!e) {
       console.error('Cannot find shader string named ' + ids[i]);
