@@ -46,6 +46,7 @@ Utility.js
 To Be Done Doc Tasks
 --------------------
 
+- add docstrings for everything in Animate.js
 - GIZA.compile should support explicit strings -- DOM ids should only be used if the first token is #
 - GIZA.compile needs usage examples (three ways of specifying strings)
 - Vector / Matrix
