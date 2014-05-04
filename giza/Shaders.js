@@ -3,13 +3,13 @@ var GIZA = GIZA || {};
 /**
  * Reads a JSON "shader spec" and fetches GLSL, compiles it, binds
  * attributes, and finally links it into a program object.
-  *
-  * @param {object} shaderSpecs - Maps from program names to shader specs, where each shader spec is an object with the following keys:
-  * - **vs** List of DOM ids for elements that contain vertex shader source code.  These sources get concatenated together.
-  * - **fs** List of DOM ids for elements that contain fragment shader source code.  These sources get concatenated together.
-  * - **attribs** *(optional)* Maps from vertex attribute strings to integer slots.  If unspecified, the "global" attributes are used below.
-  * @param {object} attribs - Optional global vertex attributes.  Maps from vertex attribute strings to integer slots, for all programs.
-  * @returns {object} Mapping between program names and `WebGLProgram` objects.
+ *
+ * @param {object} shaderSpecs - Maps from program names to shader specs, where each shader spec is an object with the following keys:
+ * - **vs** List of DOM ids for elements that contain vertex shader source code.  These sources get concatenated together.
+ * - **fs** List of DOM ids for elements that contain fragment shader source code.  These sources get concatenated together.
+ * - **attribs** *(optional)* Maps from vertex attribute strings to integer slots.  If unspecified, the "global" attributes are used below.
+ * @param {object} attribs - Optional global vertex attributes.  Maps from vertex attribute strings to integer slots, for all programs.
+ * @returns {object} Mapping between program names and `WebGLProgram` objects.
  */
 GIZA.compile = function(shaders, attribs) {
   var programs = {};
