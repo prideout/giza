@@ -80,7 +80,7 @@ GIZA.init = function(canvas, options) {
   GIZA.currentGizaContext = GIZA.extract(GIZA, gizaContextFields);
 
   // Methods to handle multiple canvases.  Client should rarely (if ever)
-  // need to call these methods, even if when using multiple canvases.
+  // need to call these methods, even when using multiple canvases.
   GIZA.saveGizaContext = function() {
     if (GIZA.currentGizaContext) {
       GIZA.merge(GIZA.currentGizaContext, GIZA, gizaContextFields);

@@ -11,7 +11,7 @@ GIZA.mouseinit = function() {
     handlers: [],
   };
 
-  var updateMouse = function(event) {
+  var onmouse = function(event) {
     var box = canvas.getBoundingClientRect();
     var x = event.clientX - box.left;
     var y = event.clientY - box.top;
@@ -33,14 +33,31 @@ GIZA.mouseinit = function() {
     }
   };
 
-  canvas.addEventListener("mousedown", updateMouse);
-  canvas.addEventListener("mouseup", updateMouse);
-  canvas.addEventListener("mousemove", updateMouse);
-  canvas.addEventListener("mouseenter", updateMouse);
-
-  canvas.addEventListener("mouseout", function() {
+  var mouseout = function() {
     giza.mouse.position = null;
-  });
+  };
+
+  GIZA._onmouse = onmouse;
+  GIZA._onmouseout = onmouseout;
+
+  canvas.addEventListener("mousedown", onmouse);
+  canvas.addEventListener("mouseup", onmouse);
+  canvas.addEventListener("mousemove", onmouse);
+  canvas.addEventListener("mouseenter", onmouse);
+  canvas.addEventListener("mouseout", onmouseout);
+};
+
+GIZA.mouseshutdown = function() {
+  var canvas = GIZA.canvas;
+  var onmouse = GIZA._onmouse;
+  var onmouseout = GIZA._onmouseout;
+  GIZA._onmouse = undefined;
+  GIZA._onmouseout = undefined;
+  canvas.removeEventListener("mousedown", onmouse);
+  canvas.removeEventListener("mouseup", onmouse);
+  canvas.removeEventListener("mousemove", onmouse);
+  canvas.removeEventListener("mouseenter", onmouse);
+  canvas.removeEventListener("mouseout", onmouseout);
 };
 
 GIZA.mousedown = function(handler) {

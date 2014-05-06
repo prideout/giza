@@ -43,13 +43,19 @@ GIZA.animate = function(drawFunction) {
     // frame.
     err = gl.getError();
     if (err == gl.NO_ERROR) {
-      window.requestAnimationFrame(renderFrame, GIZA.canvas);
+      GIZA._anim = window.requestAnimationFrame(renderFrame, GIZA.canvas);
     } else {
       console.error("WebGL error during draw cycle: ", err);
     }
   };
 
   renderFrame(GIZA.getTime());
+};
+
+GIZA.shutdown = function() {
+  window.cancelAnimationFrame(GIZA._anim);
+  GIZA._anim = undefined;
+  GIZA.mouseshutdown();
 };
 
 GIZA.pause = function() {
