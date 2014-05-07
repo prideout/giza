@@ -53,14 +53,19 @@ GIZA.animate = function(drawFunction) {
 };
 
 GIZA.shutdown = function() {
-  window.cancelAnimationFrame(GIZA._anim);
-  GIZA._anim = undefined;
+  GIZA.paused = false;
+  if (GIZA._anim) {
+    window.cancelAnimationFrame(GIZA._anim);
+    GIZA._anim = undefined;
+  }
   GIZA.mouseshutdown();
 };
 
 GIZA.pause = function() {
   GIZA.paused = true;
   GIZA.pauseTime = GIZA.getTime();
+  window.cancelAnimationFrame(GIZA._anim);
+  GIZA._anim = undefined;
 };
 
 GIZA.resume = function() {
@@ -90,12 +95,12 @@ GIZA.getTime = function() {
   if ('mozAnimationStartTime' in window) {
     now = window.mozAnimationStartTime;
   }
-      
+
   // Chrome
   else if (window.performance && 'now' in window.performance) {
     now = window.performance.now();
   }
-  
+
   // Safari
   else {
     now = Date.now();
