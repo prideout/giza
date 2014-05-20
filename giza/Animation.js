@@ -24,10 +24,7 @@ GIZA.animate = function(drawFunction) {
       return;
     }
 
-    // Clear out the GL error state at the beginning of the frame.
-    // This is a workaround for a Safari bug.
     var gl = GIZA.context;
-    gl.getError();
 
     // Before drawing the main frame, execute all draw hooks.
     time += GIZA.timeOffset;

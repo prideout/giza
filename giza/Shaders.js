@@ -34,7 +34,7 @@ GIZA.compileProgram = function(vNames, fNames, attribs) {
   gl.linkProgram(program);
   var status = gl.getProgramParameter(program, gl.LINK_STATUS);
   if (!status) {
-    console.error("Could not link " + vNames + " with " + fNames);
+    console.error("Could not link: " + gl.getProgramInfoLog(program));
   }
   var numUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
   for (var i = 0; i < numUniforms; i++) {
@@ -66,7 +66,7 @@ GIZA.compileShader = function(ids, type) {
   gl.compileShader(shaderObject);
   var status = gl.getShaderParameter(shaderObject, gl.COMPILE_STATUS);
   if (!status) {
-    console.error('GLSL error in ' + ids + ':\n' +
+    console.error('GLSL error:\n' +
                   gl.getShaderInfoLog(shaderObject));
   }
   return shaderObject;
