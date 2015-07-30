@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>FresnelGlass</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script data-main="common.js" src="lib/require.js"></script>
+  </head>
+  <body>
+    <div class="tagline">
+      Please wait while I download Buddha...
+    </div>
+
+    <canvas id="canvas3d" style="width:1264px;height:632px">
+    </canvas>
+
+    <script id="simplevs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      attribute vec2 TexCoord;
+      varying vec2 vTexCoord;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main()
+      {
+          gl_Position = projection * modelview * Position;
+          vTexCoord = TexCoord;
+      }
+    </script>
+
+    <script id="simplefs" type="x-shader/x-fragment">
+      precision highp float;
+      varying vec2 vTexCoord;
+      uniform sampler2D Texture;
+      void main()
+      {
+          gl_FragColor = texture2D(Texture, vTexCoord);
+      }
+    </script>
+
+    <script id="VS-Scene" type="x-shader/x-vertex">
+        attribute vec4 Position;
+        attribute vec3 Normal;
+        uniform mat4 modelview;
+        uniform mat4 projection;
+        varying vec3 vPosition;
+        varying vec3 vNormal;
+        void main(void)
+        {
+            vPosition = (modelview * Position).xyz;
+            vNormal = mat3(modelview) * Normal;
+            gl_Position = projection * modelview * Position;
+        }
+    </script>
+
+    <script id="FS-Depth" type="x-shader/x-fragment">
+        varying highp vec3 vNormal;
+        varying highp vec3 vPosition;
+        void main()
+        {
+            highp vec3 N = normalize(vNormal);
+            highp vec3 P = vPosition;
+            highp vec3 I = normalize(P);
+            highp float cosTheta = abs(dot(I, N));
+            highp float fresnel = pow(1.0 - cosTheta, 3.0);
+            highp float depth = gl_FrontFacing ? gl_FragCoord.z : -gl_FragCoord.z;
+            gl_FragColor = vec4(depth, fresnel, 0, 0);
+        }
+    </script>
+
+    <script id="VS-Quad" type="x-shader/x-vertex">
+        attribute vec4 Position;
+        void main(void)
+        {
+            gl_Position = Position;
+        }
+    </script>
+
+    <script id="FS-Absorption" type="x-shader/x-fragment">
+        uniform sampler2D Sampler;
+        uniform highp vec2 Size;
+        uniform highp vec3 DiffuseMaterial;
+        void main()
+        {
+            highp vec2 texCoord = gl_FragCoord.xy / Size;
+            highp float thickness = abs(texture2D(Sampler, texCoord).r);
+            if (thickness <= 0.0) discard;
+            highp float sigma = 150.0;
+            highp float fresnel = 1.0 - 0.5 * texture2D(Sampler, texCoord).g;
+            highp float intensity = fresnel * exp(-sigma * thickness);
+            gl_FragColor = vec4(intensity * DiffuseMaterial, 1);
+        }
+    </script>
+
+  </body>
+</html>
