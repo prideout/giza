@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ParametricSurf</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Philip Rideout">
+    <link href="css/style.css" rel="stylesheet">
+    <script data-main="common" src="lib/require.js"></script>
+  </head>
+  <body>
+    <h1>Parametric Surface</h1>
+    <div class="tagline">
+      Simple geometry can easily be generated rather than downloaded.
+    </div>
+    <canvas style="width:640px;height:360px">
+    </canvas>
+    <div id="button-bar">
+    </div>
+
+    <script id="solidvs" type="x-shader/x-vertex">
+      attribute vec4 Position;
+      uniform mat4 modelview;
+      uniform mat4 projection;
+      void main(void)
+      {
+          vec4 p = Position;
+          gl_Position = projection * modelview * p;
+          gl_PointSize = 64.0;
+      }
+    </script>
+
+    <script id="solidfs" type="x-shader/x-fragment">
+      precision highp float;
+      uniform vec4 color;
+      void main()
+      {
+          gl_FragColor = color;
+      }
+    </script>
+
+  </body>
+</html>
