@@ -43,7 +43,7 @@ var main = function() {
     TEXCOORD: 2,
   };
 
-  var prefix = 'http://github.prideout.net/giza/demos/media/';
+  var prefix = 'https://prideout.net/giza/demos/media/';
   var vboFiles = {
     normals: prefix + "BuddhaNormals.bin",
     positions: prefix + "BuddhaPositions.bin",
